@@ -1,0 +1,161 @@
+:root {
+  --purple: #22181f;
+    --gold:#9e6930;
+    --hover-gold: #e1cba5; /* lighter gold */
+}
+body{
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(to bottom, #22181f 0%, #281a27 100%);
+  color: white;
+  font-family: sans-serif;
+}
+
+@font-face {
+    font-family: 'Arabic';
+    src: url('../assets/arabic.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'English';
+    src: url('../assets/english.ttf') format('truetype');
+    font-weight: normal;
+}
+
+:lang(ar) {
+    font-family: 'Arabic', sans-serif;
+}
+
+:lang(en){
+    font-family: 'English', sans-serif;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--purple);
+  padding: 15px 40px;
+  color: var(--gold);
+  direction: rtl;
+}
+
+.nav-logo img {
+  height: 200px;
+  transform: rotate(90deg);
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gold);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+.nav-menu hr{
+    border:none;
+    width: 80%;
+    height: 3px;
+    border-radius: 10px;
+    background: var(--gold);
+}
+
+.nav-menu li {
+  position: relative; /* Needed for the pseudo-element */
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s ease; 
+}
+
+/* Gold underline appears on hover */
+.nav-menu li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 30px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: var(--gold); 
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* Hover effect: lift + gold underline */
+.nav-menu li:hover {
+  color: var(--hover-gold);
+  transform: translateY(-3px);
+}
+
+.nav-menu li:hover::after {
+  width: 100%;
+}
+
+.nav-menu a {
+  color: var(--gold); /* or your preferred color */
+  text-decoration: none;
+}
+
+.nav-menu a:visited {
+  color: var(--gold); /* ensures visited links don’t turn purple */
+}
+
+.nav-menu a:hover {
+  color: var(--hover-gold);
+}
+
+.nav-login-cart a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+.nav-login-cart {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.login-btn {
+  background: transparent;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background: var(--gold);
+  color: var(--purple);
+}
+
+.cart-container {
+  position: relative;
+}
+
+.cart-btn {
+  background: transparent;
+  border: none;
+  color: var(--hgold);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--hover-gold);
+  color: var(--purple);
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
