@@ -1,0 +1,47 @@
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 10%;
+  background: linear-gradient(to bottom, #22181f 0%, #1a1318 100%);
+  color: #fff;
+  gap: 60px;
+}
+
+.hero-content {
+  max-width: 500px;
+}
+
+.hero-content h1 {
+  margin-top: 0;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: var(--gold);
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #ccc;
+}
+
+.shop-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  background-color: var(--gold);
+  color: #22181f;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.shop-btn:hover {
+  background-color: var(--hover-gold);
+}
+
+.hero-image img {
+  max-width: 600px;
+  width: 150%;
+  height: auto;
+}
