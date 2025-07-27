@@ -1,24 +1,14 @@
-.loginsignup {
-    width: 100%;
-    height: 80vh;
-    background: var(--purple);
-    padding-top: 50px;
-}
-
 .loginsignup-container {
     width: 580px;
-    height: 550px;
-    background: #fff; /* Consider using a variable here if you have one for background */
-    margin: auto;
+    background: #ffffff;
+    margin: auto; /* Centering the container */
     padding: 40px 60px;
-    border: 1px solid var(--gold); /* Added border */
-    border-radius: 15px; /* Added rounded corners */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Added a subtle box shadow */
 }
 
 .loginsignup-container h1 {
-    margin: 20px 0;
-    color: var(--purple); /* Using purple from root */
+    margin: 20px 0px;
+    text-align: center; /* Centering the heading */
+    color: var(--gold); /* Changed color to gold */
 }
 
 .loginsignup-fields {
@@ -30,11 +20,11 @@
 
 .loginsignup-fields input {
     height: 72px;
-    width: 100%;
+    width: 100%; /* Full width input fields */
     padding-left: 20px;
-    border: 1px solid var(--gold); /* Using gold from root */
+    border: 1px solid #c9c9c9;
     outline: none;
-    color: var(--purple); /* Using purple from root */
+    color: #5c5c5c;
     font-size: 18px;
 }
 
@@ -49,6 +39,9 @@
     font-weight: 500;
     cursor: pointer;
     transition: background 0.3s ease; /* Added transition for hover */
+    display: block; /* Make button a block element for centering */
+    margin-left: auto; /* Center the button */
+    margin-right: auto; /* Center the button */
 }
 
 .loginsignup-container button:hover {
@@ -58,10 +51,10 @@
 .loginsignup-google-btn {
     width: 520px;
     height: 72px;
-    color: var(--purple); /* Using purple from root */
-    background: white; /* White background for contrast */
+    color: var(--gold) !important; /* Using purple from root */
+    background: white !important; /* Explicitly using hex code for white */
     margin-top: 15px; /* Added some margin above the button */
-    border: 1px solid var(--gold); /* Border to match the design */
+    border: 1px solid var(--gold) !important; /* Border to match the design */
     font-size: 24px;
     font-weight: 500;
     cursor: pointer;
@@ -70,26 +63,30 @@
     align-items: center; /* Vertically center content */
     justify-content: center; /* Horizontally center content */
     gap: 10px; /* Space between image and text */
+     margin-left: auto; /* Center the google button */
+    margin-right: auto; /* Center the google button */
 }
 
 .loginsignup-google-btn img {
     height: 30px; /* Adjust height as needed */
     width: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Vertically align the image */
 }
 
 .loginsignup-google-btn:hover {
-    background: #f0f0f0; /* Slightly grey background on hover */
+    background: var(--hover-gold); /* Slightly grey background on hover */
 }
 
 .loginsignup-login {
     margin-top: 20px;
-    color: var(--purple); /* Using purple from root */
+    color: #5c5c5c;
     font-size: 18px;
     font-weight: 500;
+    text-align: center; /* Centering the login text */
 }
 
 .loginsignup-login span {
-    color: var(--gold); /* Using gold from root */
+    color: var(--gold); /* Changed color to gold */
     font-weight: 600;
     cursor: pointer;
 }
@@ -99,24 +96,28 @@
     align-items: center;
     margin-top: 25px;
     gap: 20px;
-    color: var(--purple); /* Using purple from root */
+    color: #5c5c5c;
     font-size: 14px;
-    font-weight: 500;
+    text-align: center; /* Centering the agree text */
 }
 
+/* Media query for desktops (existing) */
 @media(max-width:1280px){
     .loginsignup{
         padding-top: 50px;
     }
     .loginsignup-container{
-        width: auto; /* Keep auto width for responsiveness below 1280px */
-        max-width: 580px; /* Add max-width to prevent it from getting too wide */
+        width: auto; 
+        max-width: 580px;
         height: auto;
         padding: 20px 30px;
-        border-radius: 10px; /* Adjusted border radius for smaller screens */
+        border-radius: 10px;
+        margin: auto; 
     }
     .loginsignup-container h1{
         margin: 10px 0;
+        text-align: center;
+        color: var(--gold);
     }
     .loginsignup-fields{
         gap: 20px;
@@ -130,29 +131,98 @@
         width: 100%;
         height: 60px;
         font-size: 16px;
+         margin-left: auto; 
+         margin-right: auto; 
+         display: block; 
     }
     .loginsignup-google-btn {
         width: 100%;
         height: 60px;
         font-size: 16px;
-        margin-top: 10px; /* Adjusted margin for smaller screens */
+        margin-top: 10px; 
+         margin-left: auto; 
+         margin-right: auto; 
+         border: 1px solid var(--gold) !important; 
     }
      .loginsignup-google-btn img {
-        height: 20px; /* Adjust height for smaller screens */
+        height: 20px; 
+        vertical-align: middle; 
     }
-    .loginsignup-login{
-        margin-top: 12px;
-        font-size: 16px;
+     .loginsignup-login, .loginsignup-agree{
+        text-align: center; 
     }
-    .loginsignup-agree{
-        gap: 10px;
-        font-size: 14px;
+    .loginsignup-login span {
+        color: var(--gold); 
     }
 }
 
-/* Adding root variables based on previous context */
-:root {
-  --purple: #22181f;
-    --gold:#9e6930;
-    --hover-gold: #e1cba5; /* lighter gold */
+/* Media query for tablets */
+@media(max-width: 768px) {
+    .loginsignup-container {
+        padding: 15px 20px; /* Adjusted padding for tablets */
+    }
+
+    .loginsignup-container h1 {
+        font-size: 28px; /* Slightly smaller heading for tablets */
+    }
+
+    .loginsignup-fields input {
+        height: 50px; /* Smaller input fields for tablets */
+        font-size: 16px;
+    }
+
+    .loginsignup-container button,
+    .loginsignup-google-btn {
+        height: 50px; /* Smaller buttons for tablets */
+        font-size: 18px;
+    }
+
+    .loginsignup-google-btn img {
+        height: 18px; /* Smaller logo for tablets */
+    }
+
+    .loginsignup-login,
+    .loginsignup-agree {
+        font-size: 16px; /* Smaller text for tablets */
+    }
+}
+
+/* Media query for phones */
+@media(max-width: 480px) {
+    .loginsignup-container {
+        padding: 10px 15px; /* Further adjusted padding for phones */
+    }
+
+    .loginsignup-container h1 {
+        font-size: 24px; /* Smaller heading for phones */
+    }
+
+    .loginsignup-fields {
+        gap: 15px; /* Reduced gap for phones */
+    }
+
+    .loginsignup-fields input {
+        height: 40px; /* Smaller input fields for phones */
+        font-size: 14px;
+    }
+
+    .loginsignup-container button,
+    .loginsignup-google-btn {
+        height: 40px; /* Smaller buttons for phones */
+        font-size: 14px;
+        margin-top: 10px; /* Adjusted margin for phones */
+    }
+
+     .loginsignup-google-btn {
+         gap: 5px; /* Reduced gap for phones */
+     }
+
+    .loginsignup-google-btn img {
+        height: 15px; /* Smaller logo for phones */
+    }
+
+    .loginsignup-login,
+    .loginsignup-agree {
+        font-size: 14px; /* Smaller text for phones */
+    }
 }
