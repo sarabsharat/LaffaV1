@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LoginSignup.css';
+import googleLogo from '../components/assets/google-logo.png';
 
 const LoginSignup = () => {
 
@@ -59,6 +60,11 @@ const LoginSignup = () => {
         }
     };
 
+    const handleGoogleLogin = () => {
+        console.log("Login with Google clicked");
+        // Add your Google login logic here
+    };
+
     return (
         <div className='loginsignup'>
             <div className="loginsignup-container">
@@ -69,6 +75,10 @@ const LoginSignup = () => {
                     <input name='password' value={formData.password} onChange={changeHandler} type="password" placeholder="Password" />
                 </div>
                 <button onClick={() => { state === "Login" ? login() : signup(); }}>Continue</button>
+                <button className="loginsignup-google-btn" onClick={handleGoogleLogin}>
+                    <img src={googleLogo} alt="Google logo" />
+                    Login with Google
+                </button>
                 {state === "Sign Up"
                     ? <p className="loginsignup-login">Already have an account? <span onClick={() => { setState("Login"); }}>Login here</span></p>
                     : <p className="loginsignup-login">Create an account? <span onClick={() => { setState("Sign Up"); }}>Click here</span></p>}

@@ -55,6 +55,32 @@
      background: var(--hover-gold); /* Using hover-gold from root for hover effect */
 }
 
+.loginsignup-google-btn {
+    width: 520px;
+    height: 72px;
+    color: var(--purple); /* Using purple from root */
+    background: white; /* White background for contrast */
+    margin-top: 15px; /* Added some margin above the button */
+    border: 1px solid var(--gold); /* Border to match the design */
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease; /* Added transition for hover */
+    display: flex; /* Use flexbox to align content */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    gap: 10px; /* Space between image and text */
+}
+
+.loginsignup-google-btn img {
+    height: 30px; /* Adjust height as needed */
+    width: auto; /* Maintain aspect ratio */
+}
+
+.loginsignup-google-btn:hover {
+    background: #f0f0f0; /* Slightly grey background on hover */
+}
+
 .loginsignup-login {
     margin-top: 20px;
     color: var(--purple); /* Using purple from root */
@@ -104,6 +130,15 @@
         width: 100%;
         height: 60px;
         font-size: 16px;
+    }
+    .loginsignup-google-btn {
+        width: 100%;
+        height: 60px;
+        font-size: 16px;
+        margin-top: 10px; /* Adjusted margin for smaller screens */
+    }
+     .loginsignup-google-btn img {
+        height: 20px; /* Adjust height for smaller screens */
     }
     .loginsignup-login{
         margin-top: 12px;
