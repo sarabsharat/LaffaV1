@@ -1,0 +1,123 @@
+.loginsignup {
+    width: 100%;
+    height: 80vh;
+    background: var(--purple);
+    padding-top: 50px;
+}
+
+.loginsignup-container {
+    width: 580px;
+    height: 550px;
+    background: #fff; /* Consider using a variable here if you have one for background */
+    margin: auto;
+    padding: 40px 60px;
+    border: 1px solid var(--gold); /* Added border */
+    border-radius: 15px; /* Added rounded corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Added a subtle box shadow */
+}
+
+.loginsignup-container h1 {
+    margin: 20px 0;
+    color: var(--purple); /* Using purple from root */
+}
+
+.loginsignup-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 29px;
+    margin-top: 30px;
+}
+
+.loginsignup-fields input {
+    height: 72px;
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid var(--gold); /* Using gold from root */
+    outline: none;
+    color: var(--purple); /* Using purple from root */
+    font-size: 18px;
+}
+
+.loginsignup-container button {
+    width: 520px;
+    height: 72px;
+    color: white; /* Assuming you want white text on the button */
+    background: var(--gold); /* Using gold from root */
+    margin-top: 30px;
+    border: none;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease; /* Added transition for hover */
+}
+
+.loginsignup-container button:hover {
+     background: var(--hover-gold); /* Using hover-gold from root for hover effect */
+}
+
+.loginsignup-login {
+    margin-top: 20px;
+    color: var(--purple); /* Using purple from root */
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.loginsignup-login span {
+    color: var(--gold); /* Using gold from root */
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.loginsignup-agree {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    gap: 20px;
+    color: var(--purple); /* Using purple from root */
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media(max-width:1280px){
+    .loginsignup{
+        padding-top: 50px;
+    }
+    .loginsignup-container{
+        width: auto; /* Keep auto width for responsiveness below 1280px */
+        max-width: 580px; /* Add max-width to prevent it from getting too wide */
+        height: auto;
+        padding: 20px 30px;
+        border-radius: 10px; /* Adjusted border radius for smaller screens */
+    }
+    .loginsignup-container h1{
+        margin: 10px 0;
+    }
+    .loginsignup-fields{
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .loginsignup-fields input{
+        height: 60px;
+        width: 93%;
+    }
+    .loginsignup-container button{
+        width: 100%;
+        height: 60px;
+        font-size: 16px;
+    }
+    .loginsignup-login{
+        margin-top: 12px;
+        font-size: 16px;
+    }
+    .loginsignup-agree{
+        gap: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Adding root variables based on previous context */
+:root {
+  --purple: #22181f;
+    --gold:#9e6930;
+    --hover-gold: #e1cba5; /* lighter gold */
+}
