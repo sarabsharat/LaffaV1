@@ -4,7 +4,9 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { useState } from 'react'
 import { FaCartShopping } from "react-icons/fa6";
- const Navbar = () => {
+
+// Receive totalQuantity as a prop
+ const Navbar = ({ totalQuantity }) => {
 
     const [menu, setMenu] = useState("Home");
 
@@ -27,7 +29,8 @@ import { FaCartShopping } from "react-icons/fa6";
           <Link style={{ textDecoration:"none"}} to="/Cart"><button className='cart-btn'>
             <FaCartShopping />
           </button></Link>
-          <span className='cart-count'>0</span>
+          {/* Display the total quantity */}
+          <span className='cart-count'>{totalQuantity}</span>
         </div>
       </div>
     </div>  

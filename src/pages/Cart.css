@@ -1,0 +1,188 @@
+:root {
+  --cool-red: #c0392b; /* A cool shade of red */
+}
+
+.cart-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 8px;
+}
+
+.cart-container h1 {
+    text-align: center;
+    color: var(--gold); /* Using gold for the heading */
+    margin-bottom: 20px;
+}
+
+.cart-items {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+    position: relative; /* Needed for absolute positioning of delete button */
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 4px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+
+.cart-item-details p {
+    margin: 0 0 10px 0;
+    color: #555;
+}
+
+.cart-item-quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.cart-item-quantity-control button {
+    background-color: var(--gold);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.cart-item-quantity-control button:hover {
+    background-color: var(--hover-gold);
+}
+
+.cart-item-delete {
+    position: absolute; /* Position the delete button absolutely */
+    right: 0; /* Align to the right */
+    top: 0; /* Align to the top */
+    bottom: 0; /* Make it span the full height */
+    background-color: var(--cool-red); /* Using the cool shade of red */
+    color: white;
+    border: none;
+    width: 40px; /* Adjust width as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px; /* Adjust icon size */
+}
+
+.cart-item-delete:hover {
+    background-color: #a93226; /* A slightly darker shade for hover */
+}
+
+.cart-summary {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    text-align: right;
+}
+
+.cart-summary h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.cart-summary p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Responsive Styles */
+@media(max-width: 768px) {
+    .cart-container {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .cart-item {
+        flex-direction: column; /* Stack items on smaller screens */
+        align-items: flex-start;
+        padding-right: 50px; /* Add padding to the right to make space for the delete button */
+    }
+
+    .cart-item-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 0;
+        margin-bottom: 10px; /* Add space below image */
+    }
+
+    .cart-item-details {
+        width: 100%; /* Full width details on smaller screens */
+    }
+
+    .cart-item-quantity-control {
+        margin-bottom: 10px;
+    }
+
+    .cart-item-delete {
+        width: 30px; /* Adjust width for smaller screens */
+        font-size: 16px; /* Adjust icon size for smaller screens */
+    }
+
+    .cart-summary {
+        text-align: center; /* Center summary on smaller screens */
+    }
+}
+
+@media(max-width: 480px) {
+    .cart-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .cart-container h1 {
+        font-size: 24px;
+    }
+
+    .cart-item-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cart-item-details h3 {
+        font-size: 16px;
+    }
+
+    .cart-item-details p {
+        font-size: 14px;
+    }
+
+    .cart-item-quantity-control button {
+        padding: 3px 8px;
+        font-size: 14px;
+    }
+
+    .cart-item-delete {
+        width: 25px; /* Adjust width for smaller screens */
+        font-size: 14px; /* Adjust icon size for smaller screens */
+    }
+
+    .cart-summary h2 {
+        font-size: 18px;
+    }
+
+    .cart-summary p {
+        font-size: 16px;
+    }
+}
