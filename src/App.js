@@ -9,6 +9,8 @@ import Shop from './pages/Shop.jsx';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import LoginSignup from './pages/LoginSignup';
+import Footer from './components/footer/footer.jsx'; // Import the Footer component
+
 
 // Import product images
 import product1_image from './components/assets/Product1.jpg';
@@ -56,6 +58,7 @@ function App() {
           <Route path="/Cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
           <Route path="/LoginSignup" element={<LoginSignup />} />
         </Routes>
+        <Footer /> {/* Add the Footer component here */}
       </BrowserRouter>
     </div>  
   );

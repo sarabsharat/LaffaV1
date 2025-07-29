@@ -1,0 +1,67 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #1a1418; /* Changed background color to a darker purple (Indigo) */
+  color: #ffffff; /* Added text color for contrast */
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-logo img {
+  width: 50px; /* Adjust size as needed */
+  transform: rotate(90deg); /* Rotate logo */
+}
+
+.footer-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.footer-links li {
+  cursor: pointer; /* Add cursor pointer to list items */
+}
+
+.footer-social-icon {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-icons-container {
+  /* Add any container specific styles here if needed */
+}
+
+.footer-copyright {
+  text-align: center;
+}
+
+.footer-copyright hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #ffffff; /* Changed line color for contrast */
+}
+
+/* Basic Mobile Responsiveness */
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-social-icon {
+    justify-content: center; /* Center social icons on smaller screens */
+  }
+}
