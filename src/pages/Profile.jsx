@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Profile.css'; // We will create this CSS file
+import './Profile.css'; 
 
 const Profile = () => {
     const [userName, setUserName] = useState('User Name'); // Placeholder for user's current name

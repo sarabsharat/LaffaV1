@@ -1,8 +1,18 @@
-.shop-container {
+:root {
+    --darker-purple: #22181f;
+      --gold:#9e6930;
+      --hover-gold: #e1cba5; /* lighter gold */
+      --purple: #6C4A79; /* Define the darker purple color */
+  }
+  .shop-container {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
+.shop-container h1 {
+    color: var(--gold);
+}
+
 
 .shop-header {
     text-align: center;
@@ -11,7 +21,7 @@
 
 .shop-header h1 {
     font-size: 2.5em;
-    color: #fff;
+    color: var(--gold);
 }
 
 .filter-search-container {
