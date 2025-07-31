@@ -12,7 +12,7 @@ import LoginSignup from './pages/LoginSignup';
 import Footer from './components/footer/footer.jsx';
 import Profile from './pages/Profile';
 import { LanguageProvider, LanguageContext } from './LanguageContext.js'; // Import LanguageContext
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // Import product images
 import product1_image from './components/assets/Product1.jpg';

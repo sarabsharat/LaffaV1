@@ -1,81 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  MDBBtn,
   MDBContainer,
-  MDBRow,
-  MDBCol,
   MDBCard,
-  MDBCardBody,
-  MDBCardImage,
   MDBInput,
   MDBIcon,
   MDBCheckbox,
 } from 'mdb-react-ui-kit';
 import firebase, { auth } from '../firebase';
 import googleLogo from '../components/assets/google-logo.png';
-import './LoginSignup.css';
+import JOR_flag from '../components/assets/JOR_flag.png'; // Import the Jordanian flag image
+import './LoginSignup.css'; // Ensure this file exists and is used for styling
+import Image from "../components/assets/Front.png";
+
 
 // Ensure Firebase is initialized before using this component
 
 const AREAS_BY_GOV = {
   "العاصمة (Amman)": [
-    "العبدلي",
-    "الزرقاء الجديدة",
-    "ماركا",
-    "الدوار الرابع",
-    "المهاجرين",
-    "المدينة الرياضية",
-    "خالد بن الوليد",
-    "صويلح",
-    "نقابة المهندسين",
-    "عبدون",
-    "الدوار الخامس",
-    "الدوار السادس",
-    "الشميساني",
-    "جبل اللويبدة",
-    "وادي صقرة",
-    "جبل النزهة",
-    "وسط البلد",
-    "الجبيهة",
-    "رأس العين",
-    "الصويفية",
-    "المدينة الصناعية",
-    "الجامعة الأردنية",
-    "حي نزال",
-    "الشميساني الجديدة",
-    "الرابية",
+    "العبدلي", "الزرقاء الجديدة", "ماركا", "الدوار الرابع", "المهاجرين",
+    "المدينة الرياضية", "خالد بن الوليد", "صويلح", "نقابة المهندسين", "عبدون",
+    "الدوار الخامس", "الدوار السادس", "الشميساني", "جبل اللويبدة", "وادي صقرة",
+    "جبل النزهة", "وسط البلد", "الجبيهة", "رأس العين", "الصويفية",
+    "المدينة الصناعية", "الجامعة الأردنية", "حي نزال", "الشميساني الجديدة", "الرابية",
   ],
   "الزرقاء (Zarqa)": [
-    "الوسطية",
-    "الحمة الشرقية",
-    "الحمة الغربية",
-    "الزرقاء البلد",
-    "الجبل الأزرق",
+    "الوسطية", "الحمة الشرقية", "الحمة الغربية", "الزرقاء البلد", "الجبل الأزرق",
     "الزرقاء الجديدة",
   ],
   "إربد (Irbid)": [
-    "إربد",
-    "الرصيفة",
-    "بريدة",
-    "الجامعة الأردنية",
-    "لواء بني كنانة",
-    "لواء كفرنجة",
-    "لواء الرمثا",
-    "لواء الطيبة",
+    "إربد", "الرصيفة", "بريدة", "الجامعة الأردنية", "لواء بني كنانة",
+    "لواء كفرنجة", "لواء الرمثا", "لواء الطيبة",
   ],
   "الكرك (Karak)": ["الكرك", "لواء القصر", "لواء الشوبك", "لواء المزار", "لواء البتراء"],
   "المفرق (Mafraq)": [
-    "المفرق",
-    "لواء البادية الشمالية الشرقية",
-    "لواء البادية الشمالية الغربية",
-    "لواء الحمرة",
+    "المفرق", "لواء البادية الشمالية الشرقية", "لواء البادية الشمالية الغربية", "لواء الحمرة",
   ],
   "البلقاء (Balqa)": [
-    "السلط",
-    "لواء الفحيص",
-    "لواء عين الباشا",
-    "لواء الأشرفية",
-    "لواء الرمثا",
+    "السلط", "لواء الفحيص", "لواء عين الباشا", "لواء الأشرفية", "لواء الرمثا",
     "لواء بسطا",
   ],
   "معان (Ma'an)": ["معان", "لواء الشوبك", "لواء المريغة", "لواء القطرانة", "لواء الجفر"],
@@ -93,7 +54,7 @@ const LoginSignup = () => {
     email: '',
     password: '',
     repeatPassword: '',
-    countryCode: '+962',
+    countryCode: '+962', // Fixed for Jordan
     phoneNumber: '',
     province: '',
     area: '',
@@ -107,6 +68,11 @@ const LoginSignup = () => {
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [isCodeSending, setIsCodeSending] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const recaptchaContainerRef = useRef(null); // Ref for reCAPTCHA container
 
   const fullPhoneNumber = formData.countryCode + formData.phoneNumber;
 
@@ -116,35 +82,102 @@ const LoginSignup = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+    setErrorMessage(''); // Clear error message on input change
   };
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleRepeatPasswordVisibility = () => {
+    setRepeatPasswordVisible(!repeatPasswordVisible);
+  };
+
+  // Initialize reCAPTCHA when state changes to 'Sign Up' and container is available
   useEffect(() => {
-    if (state === 'Sign Up' && !recaptchaVerifier) {
-      const verifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    let verifier = null;
+    if (state === 'Sign Up' && recaptchaContainerRef.current && !recaptchaVerifier) {
+      verifier = new firebase.auth.RecaptchaVerifier(recaptchaContainerRef.current, {
         size: 'invisible',
-        callback: () => { console.log('reCAPTCHA solved'); },
-        'expired-callback': () => { console.log('reCAPTCHA expired'); },
+        callback: () => { /* console.log('reCAPTCHA solved'); */ },
+        'expired-callback': () => {
+          setErrorMessage('reCAPTCHA expired. Please try sending the code again.');
+          if (recaptchaVerifier) {
+            try { recaptchaVerifier.clear(); } catch (e) { /* console.error("Error clearing recaptcha", e); */ }
+          }
+          setRecaptchaVerifier(null); // Clear verifier to force re-render or re-initialization
+        },
       });
       verifier.render().then(widgetId => {
-        console.log('reCAPTCHA rendered with widgetId:', widgetId);
+        // console.log('reCAPTCHA rendered with widgetId:', widgetId);
+      }).catch(err => {
+        console.error("reCAPTCHA render error:", err);
+        setErrorMessage('Failed to load reCAPTCHA. Please refresh the page.');
       });
       setRecaptchaVerifier(verifier);
     }
+
+    // Cleanup function
+    return () => {
+      if (verifier) {
+        try { verifier.clear(); } catch (e) { /* console.error("Error clearing recaptcha on unmount", e); */ }
+      }
+      // If recaptchaVerifier is in state, clear it only if it's the one we created in this effect run
+      // This prevents clearing a new verifier if the effect runs multiple times quickly
+      // setRecaptchaVerifier(null); // Removed to avoid clearing verifier prematurely
+    };
+  }, [state]); // Depend only on state and recaptchaContainerRef.current implicitly
+
+   // Effect to handle cleanup specifically when recaptchaVerifier changes
+   useEffect(() => {
     return () => {
       if (recaptchaVerifier) {
-        try { recaptchaVerifier.clear(); } catch {}
+        try {
+          recaptchaVerifier.clear();
+          // console.log("Recaptcha cleared on recaptchaVerifier change");
+        } catch (e) {
+          console.error("Error clearing recaptcha on recaptchaVerifier change", e);
+        }
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-  
+  }, [recaptchaVerifier]); // Depend on recaptchaVerifier for cleanup
+
+
+  const validateSignupForm = () => {
+    if (!formData.username || !formData.email || !formData.password || !formData.repeatPassword || !formData.phoneNumber || !formData.province || !formData.area || !formData.street) {
+      setErrorMessage('All fields are required.');
+      return false;
+    }
+    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
+      setErrorMessage('Please enter a valid email address.');
+      return false;
+    }
+    if (formData.password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long.');
+      return false;
+    }
+    if (formData.password !== formData.repeatPassword) {
+      setErrorMessage('Passwords do not match.');
+      return false;
+    }
+    if (!formData.agreeTerms) {
+      setErrorMessage('You must agree to the terms and privacy policy.');
+      return false;
+    }
+    return true;
+  };
+
   const sendVerificationCode = async () => {
+    setErrorMessage(''); // Clear previous errors
+    if (!validateSignupForm()) {
+      return;
+    }
     if (!formData.phoneNumber) {
-      alert('Please enter your phone number.');
+      setErrorMessage('Please enter your phone number.');
       return;
     }
     if (!recaptchaVerifier) {
-      alert('reCAPTCHA not ready yet.');
+      setErrorMessage('reCAPTCHA not ready yet. Please wait a moment or refresh.');
       return;
     }
 
@@ -153,35 +186,36 @@ const LoginSignup = () => {
       const confirmation = await auth.signInWithPhoneNumber(fullPhoneNumber, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setShowCodeInput(true);
-      alert('Verification code sent to your WhatsApp/phone.');
+      setErrorMessage('Verification code sent to your WhatsApp/phone.'); // Use error message area for success
     } catch (err) {
       console.error('sendVerificationCode error', err);
-      alert('Failed to send code. Check the number and try again.');
-      // If you get "reCAPTCHA expired" you can reset by calling recaptchaVerifier.render() again or re-initializing.
+      setErrorMessage('Failed to send code. Check the number and try again. (Error: ' + err.message + ')');
+      // If reCAPTCHA expired, it will be handled by its callback
     } finally {
       setIsCodeSending(false);
     }
   };
-  
+
   const verifyCodeAndSignup = async () => {
+    setErrorMessage(''); // Clear previous errors
     if (!verificationCode) {
-      alert('Enter the code.');
+      setErrorMessage('Enter the verification code.');
       return;
     }
     if (!confirmationResult) {
-      alert('No pending verification. Send code first.');
+      setErrorMessage('No pending verification. Send code first.');
       return;
     }
-  
+
     setIsSigningUp(true);
     try {
       await confirmationResult.confirm(verificationCode);
       // phone is verified — proceed to backend signup
       let responseData;
-      await fetch('http://localhost:4000/signup', {
+      const response = await fetch('http://localhost:4000/signup', {
         method: 'POST',
         headers: {
-          Accept: 'application/form-data',
+          Accept: 'application/json', // Changed to application/json
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -189,75 +223,113 @@ const LoginSignup = () => {
           phone: fullPhoneNumber,
           phoneVerified: true,
         }),
-      })
-        .then((r) => r.json())
-        .then((d) => (responseData = d));
-  
+      });
+      responseData = await response.json();
+
       if (responseData?.success) {
         localStorage.setItem('auth-token', responseData.token);
         window.location.replace('/');
       } else {
-        alert(responseData?.errors || 'Signup failed');
+        setErrorMessage(responseData?.errors || 'Signup failed. Please try again.');
       }
     } catch (err) {
       console.error('verifyCodeAndSignup error', err);
-      alert('Code verification failed.');
+      setErrorMessage('Code verification failed. Please check the code and try again. (Error: ' + err.message + ')');
     } finally {
       setIsSigningUp(false);
     }
   };
-  
+
+  const validateLoginForm = () => {
+    if (!formData.email || !formData.password) {
+      setErrorMessage('Email and password are required.');
+      return false;
+    }
+    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
+      setErrorMessage('Please enter a valid email address.');
+      return false;
+    }
+    return true;
+  };
 
   const login = async () => {
-    console.log('Login Function Executed', formData);
-    let responseData;
-    await fetch('http://localhost:4000/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/form-data',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        responseData = data;
-      });
+    setErrorMessage(''); // Clear previous errors
+    if (!validateLoginForm()) {
+      return;
+    }
 
-    if (responseData?.success) {
-      localStorage.setItem('auth-token', responseData.token);
-      window.location.replace('/');
-    } else {
-      alert(responseData?.errors || 'Login failed');
+    let responseData;
+    try {
+      const response = await fetch('http://localhost:4000/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json', // Changed to application/json
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      responseData = await response.json();
+
+      if (responseData?.success) {
+        localStorage.setItem('auth-token', responseData.token);
+        window.location.replace('/');
+      } else {
+        setErrorMessage(responseData?.errors || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setErrorMessage('An error occurred during login. Please try again later.');
     }
   };
 
   const handleGoogleLogin = async () => {
+    setErrorMessage(''); // Clear previous errors
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
       await auth.signInWithPopup(provider);
       window.location.replace('/');
     } catch (error) {
       console.error('Google login error:', error);
-      alert('Google login failed.');
+      setErrorMessage('Google login failed: ' + error.message);
     }
   };
+
+  // Define common styles for inputs
+  const commonInputStyle = {
+    background: 'rgba(255,255,255,0.85)',
+    borderRadius: '12px',
+    border: `1px solid #221820`, // purple2
+    padding: '0.75rem 1rem',
+    color: '#1f0f2e', // Dark text for contrast on light background
+    fontWeight: 500,
+  };
+
+  // Define common inputProps for MDBInput
+  const commonInputProps = {
+    style: { background: 'transparent', color: '#1f0f2e' } // Text color inside input
+  };
+
   const purple1 = '#432e3f';
   const purple2 = '#221820';
-  const accent = '#CFA3E1';
-  const inputBg = 'rgba(255,255,255,0.85)';
+  const accent = '#CFA3E1'; 
+  const white = '#fff';
+  const inputBg = 'rgba(255,255,255,0.85)'; 
+
+  // InputRow component with visible label
   const InputRow = ({ icon, label, children }) => (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: 12 }}>
-      <div style={{ marginTop: 8, flexShrink: 0 }}>
-        <MDBIcon fas icon={icon + ' me-3'} size="lg" style={{ color: '#CFA3E1', minWidth: 32 }} />
+    <div className="input-row-container"> {/* Added a class for potential CSS styling */}
+      <div className="input-row-icon">
+        <MDBIcon fas icon={icon + ' me-3'} size="lg" style={{ color: white , minWidth: 32 }} />
       </div>
-      <div style={{ flex: 1 }}>{children}</div>
+      <div className="input-row-content">
+        <label className="input-row-label" style={{ color: white, fontWeight: 500, marginBottom: '0.25rem', display: 'block' }}>{label}</label>
+        {children}
+      </div>
     </div>
   );
-  
+
   return (
-    
-    <MDBContainer fluid className="loginsignup" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #1f0f2e 0%, #2e1c50 100%)', minHeight: '100vh' }}>
+    <MDBContainer fluid className="loginsignup" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh' }}>
       <MDBCard
         className="text-black m-0 mx-auto"
         style={{
@@ -286,7 +358,7 @@ const LoginSignup = () => {
               <h1
                 className="fw-bold"
                 style={{
-                  color: accent,
+                  color: purple1,
                   fontSize: '1.75rem',
                   margin: 0,
                   letterSpacing: '0.5px',
@@ -304,57 +376,46 @@ const LoginSignup = () => {
                 }}
               />
             </div>
-    
+
+            {errorMessage && (
+              <div className="error-message" style={{ color: '#ff6b6b', fontSize: '0.9rem', marginTop: '0.5rem', textAlign: 'center' }}>
+                {errorMessage}
+              </div>
+            )}
+
             {state === 'Sign Up' ? (
               <>
                 <InputRow icon="user" label="Your Name">
                   <MDBInput
-                    labelClass="visually-hidden"
-                    label="Your Name"
                     id="signupForm1"
                     type="text"
                     name="username"
                     value={formData.username}
                     onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                    placeholder="Enter your full name"
+                    style={commonInputStyle}
+                    inputProps={commonInputProps}
                   />
                 </InputRow>
-    
+
                 <InputRow icon="envelope" label="Your Email">
                   <MDBInput
-                    labelClass="visually-hidden"
-                    label="Your Email"
                     id="signupForm2"
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                    placeholder="e.g., example@domain.com"
+                    style={commonInputStyle}
+                    inputProps={commonInputProps}
                   />
                 </InputRow>
-    
+
                 {!showCodeInput ? (
-                  <InputRow icon="phone" label="Phone">
-                    <div className="d-flex" style={{ gap: '0.75rem', width: '100%' }}>
+                  <InputRow icon="phone" label="Phone Number">
+                    <div className="phone-input-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
+                      <img src={JOR_flag} alt="Jordanian flag" style={{ height: '20px' }} /> {/* Added flag image */}
                       <MDBInput
-                        labelClass="visually-hidden"
-                        label="Code (+962)"
                         id="signupFormPhoneCode"
                         type="text"
                         className="country-code-input"
@@ -362,104 +423,94 @@ const LoginSignup = () => {
                         value={formData.countryCode}
                         onChange={changeHandler}
                         readOnly
-                        style={{
-                          background: inputBg,
-                          borderRadius: '12px',
-                          border: `1px solid ${purple2}`,
-                          padding: '0.75rem 1rem',
-                          flex: '0 0 120px',
-                          color: '#fff',
-                          fontWeight: 500,
-                        }}
-                        inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                        style={{ ...commonInputStyle, flex: '0 0 80px' }} // Adjusted width
+                        inputProps={commonInputProps}
                       />
                       <MDBInput
-                        labelClass="visually-hidden"
-                        label="Phone Number"
                         id="signupFormPhoneNumber"
                         type="tel"
                         className="phone-number-input"
                         name="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={changeHandler}
-                        style={{
-                          background: inputBg,
-                          borderRadius: '12px',
-                          border: `1px solid ${purple2}`,
-                          padding: '0.75rem 1rem',
-                          flex: 1,
-                          color: '#fff',
-                          fontWeight: 500,
-                        }}
-                        inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                        placeholder="e.g., 7xxxxxxx"
+                        style={{ ...commonInputStyle, flex: 1 }}
+                        inputProps={commonInputProps}
                       />
                     </div>
                   </InputRow>
                 ) : (
                   <InputRow icon="mobile-alt" label="Verification Code">
                     <MDBInput
-                      labelClass="visually-hidden"
-                      label="Verification Code"
                       id="signupFormVerificationCode"
                       type="text"
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder="Enter SMS code"
-                      style={{
-                        background: inputBg,
-                        borderRadius: '12px',
-                        border: `1px solid ${purple2}`,
-                        padding: '0.75rem 1rem',
-                        color: '#fff',
-                        fontWeight: 500,
-                      }}
-                      inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                      style={commonInputStyle}
+                      inputProps={commonInputProps}
                     />
                   </InputRow>
                 )}
-    
+
                 <InputRow icon="lock" label="Password">
-                  <MDBInput
-                    labelClass="visually-hidden"
-                    label="Password"
-                    id="signupForm3"
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
-                  />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <MDBInput
+                      id="signupForm3"
+                      type={passwordVisible ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={changeHandler}
+                      placeholder="Enter your password"
+                      style={commonInputStyle}
+                      inputProps={commonInputProps}
+                    />
+                    <MDBIcon
+                      fas
+                      icon={passwordVisible ? 'eye-slash' : 'eye'}
+                      className="password-toggle-icon"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        position: 'absolute',
+                        right: '1rem',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        cursor: 'pointer',
+                        color: purple1,
+                      }}
+                    />
+                  </div>
                 </InputRow>
-    
+
                 <InputRow icon="key" label="Repeat Password">
-                  <MDBInput
-                    labelClass="visually-hidden"
-                    label="Repeat your password"
-                    id="signupForm4"
-                    type="password"
-                    name="repeatPassword"
-                    value={formData.repeatPassword}
-                    onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
-                  />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <MDBInput
+                      id="signupForm4"
+                      type={repeatPasswordVisible ? 'text' : 'password'}
+                      name="repeatPassword"
+                      value={formData.repeatPassword}
+                      onChange={changeHandler}
+                      placeholder="Repeat your password"
+                      style={commonInputStyle}
+                      inputProps={commonInputProps}
+                    />
+                    <MDBIcon
+                      fas
+                      icon={repeatPasswordVisible ? 'eye-slash' : 'eye'}
+                      className="password-toggle-icon"
+                      onClick={toggleRepeatPasswordVisibility}
+                      style={{
+                        position: 'absolute',
+                        right: '1rem',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        cursor: 'pointer',
+                        color: purple1,
+                      }}
+                    />
+                  </div>
                 </InputRow>
-    
+
                 <InputRow icon="globe" label="Province">
                   <select
                     name="province"
@@ -469,12 +520,8 @@ const LoginSignup = () => {
                     style={{
                       appearance: 'none',
                       width: '100%',
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
+                      ...commonInputStyle,
+                      color: formData.province ? commonInputProps.style.color : '#888', // Grey out placeholder
                     }}
                   >
                     <option value="" disabled>
@@ -487,7 +534,7 @@ const LoginSignup = () => {
                     ))}
                   </select>
                 </InputRow>
-    
+
                 <InputRow icon="city" label="Area">
                   <select
                     name="area"
@@ -498,12 +545,8 @@ const LoginSignup = () => {
                     style={{
                       appearance: 'none',
                       width: '100%',
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
+                      ...commonInputStyle,
+                      color: formData.area ? commonInputProps.style.color : '#888', // Grey out placeholder
                     }}
                   >
                     <option value="" disabled>
@@ -516,28 +559,20 @@ const LoginSignup = () => {
                     ))}
                   </select>
                 </InputRow>
-    
+
                 <InputRow icon="road" label="Street Name">
                   <MDBInput
-                    labelClass="visually-hidden"
-                    label="Street Name"
                     id="signupFormStreet"
                     type="text"
                     name="street"
                     value={formData.street}
                     onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                    placeholder="e.g., Main Street"
+                    style={commonInputStyle}
+                    inputProps={commonInputProps}
                   />
                 </InputRow>
-    
+
                 <div style={{ marginTop: '0.5rem' }}>
                   <MDBCheckbox
                     name="agreeTerms"
@@ -553,12 +588,13 @@ const LoginSignup = () => {
                     onChange={changeHandler}
                   />
                 </div>
-    
+
                 <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   {!showCodeInput ? (
                     <button
                       onClick={sendVerificationCode}
                       disabled={isCodeSending}
+                      className="action-button" // Added a class for potential CSS styling
                       style={{
                         flex: '1 1 100%',
                         padding: '0.9rem',
@@ -574,12 +610,19 @@ const LoginSignup = () => {
                       onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                       onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                     >
-                      {isCodeSending ? 'Sending Code...' : 'Send Verification Code'}
+                      {isCodeSending ? (
+                        <>
+                          Sending Code... <MDBIcon fas icon="spinner" spin />
+                        </>
+                      ) : (
+                        'Send Verification Code'
+                      )}
                     </button>
                   ) : (
                     <button
                       onClick={verifyCodeAndSignup}
                       disabled={isSigningUp}
+                      className="action-button" // Added a class for potential CSS styling
                       style={{
                         flex: '1 1 100%',
                         padding: '0.9rem',
@@ -595,7 +638,13 @@ const LoginSignup = () => {
                       onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                       onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                     >
-                      {isSigningUp ? 'Signing Up...' : 'Verify Code and Register'}
+                      {isSigningUp ? (
+                        <>
+                          Signing Up... <MDBIcon fas icon="spinner" spin />
+                        </>
+                      ) : (
+                        'Verify Code and Register'
+                      )}
                     </button>
                   )}
                 </div>
@@ -604,48 +653,49 @@ const LoginSignup = () => {
               <>
                 <InputRow icon="envelope" label="Email">
                   <MDBInput
-                    labelClass="visually-hidden"
-                    label="Your Email"
                     id="loginForm1"
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
+                    placeholder="e.g., example@domain.com"
+                    style={commonInputStyle}
+                    inputProps={commonInputProps}
                   />
                 </InputRow>
-    
+
                 <InputRow icon="lock" label="Password">
-                  <MDBInput
-                    labelClass="visually-hidden"
-                    label="Password"
-                    id="loginForm2"
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={changeHandler}
-                    style={{
-                      background: inputBg,
-                      borderRadius: '12px',
-                      border: `1px solid ${purple2}`,
-                      padding: '0.75rem 1rem',
-                      color: '#fff',
-                      fontWeight: 500,
-                    }}
-                    inputProps={{ style: { background: 'transparent', color: '#fff' } }}
-                  />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <MDBInput
+                      id="loginForm2"
+                      type={passwordVisible ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={changeHandler}
+                      placeholder="Enter your password"
+                      style={commonInputStyle}
+                      inputProps={commonInputProps}
+                    />
+                    <MDBIcon
+                      fas
+                      icon={passwordVisible ? 'eye-slash' : 'eye'}
+                      className="password-toggle-icon"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        position: 'absolute',
+                        right: '1rem',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        cursor: 'pointer',
+                        color: purple1,
+                      }}
+                    />
+                  </div>
                 </InputRow>
-    
+
                 <button
                   onClick={login}
+                  className="action-button" // Added a class for potential CSS styling
                   style={{
                     marginTop: '0.5rem',
                     padding: '0.9rem',
@@ -666,7 +716,7 @@ const LoginSignup = () => {
                 </button>
               </>
             )}
-    
+
             <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <button
                 className="loginsignup-google-btn"
@@ -691,29 +741,29 @@ const LoginSignup = () => {
                 <img src={googleLogo} alt="Google logo" style={{ height: 18 }} />
                 Continue with Google
               </button>
-    
+
               <p style={{ color: '#ccc', fontSize: '0.9rem', margin: 0, textAlign: 'center' }}>
                 {state === 'Sign Up' ? (
                   <>
                     Already have an account?{' '}
-                    <span onClick={() => setState('Login')} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
+                    <span onClick={() => { setState('Login'); setErrorMessage(''); setShowCodeInput(false); }} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
                       Login here
                     </span>
                   </>
                 ) : (
                   <>
                     Create an account?{' '}
-                    <span onClick={() => setState('Sign Up')} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
+                    <span onClick={() => { setState('Sign Up'); setErrorMessage(''); setShowCodeInput(false); }} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
                       Click here
                     </span>
                   </>
                 )}
               </p>
             </div>
-    
-            <div id="recaptcha-container" style={{ marginTop: 8 }}></div>
+
+            <div id="recaptcha-container" ref={recaptchaContainerRef} style={{ marginTop: 8 }}></div>
           </div>
-    
+
           <div
             style={{
               flex: '1 1 400px',
@@ -727,7 +777,7 @@ const LoginSignup = () => {
             }}
           >
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+              src={Image}
               alt="Illustration"
               style={{
                 maxWidth: '100%',
@@ -749,7 +799,6 @@ const LoginSignup = () => {
         </div>
       </MDBCard>
     </MDBContainer>
-    
   );
 };
 
