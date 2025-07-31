@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #22181f; /* Set body background to #22181f */
 }
 
 code {
@@ -16,4 +17,26 @@ code {
   max-width: 1200px; /* Adjust as needed */
   margin: 0 auto;
   padding: 0 15px; /* Add some padding on the sides */
+}
+
+@font-face {
+    font-family: 'Arabic';
+    src: url('./components/assets/arabic.ttf') format('truetype');
+    font-weight: normal;
+    font-display: swap; /* Added font-display */
+}
+
+@font-face {
+    font-family: 'English';
+    src: url('./components/assets/english.ttf') format('truetype');
+    font-weight: normal;
+    font-display: swap; /* Added font-display */
+}
+
+:lang(ar) {
+    font-family: 'Arabic', sans-serif;
+}
+
+:lang(en){
+    font-family: 'English', sans-serif;
 }

@@ -1,14 +1,47 @@
 import './navbar.css'
 import logo from '../assets/logo.png'
-import React from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react'
 import { FaCartShopping } from "react-icons/fa6";
+import { FaGlobe } from "react-icons/fa"; // Import the globe icon
+import translations from '../translations'; // Import translations
+import { LanguageContext } from '../../LanguageContext'; // We will create this Context
+
+// Import flags
+import ukFlag from "../assets/UK_flag.png";
+import jordanFlag from '../assets/JOR_flag.png'; 
 
 // Receive totalQuantity as a prop
  const Navbar = ({ totalQuantity }) => {
-
     const [menu, setMenu] = useState("Home");
+    const [showLanguageDropdown, setShowLanguageDropdown] = useState(false); // State to control dropdown visibility
+    const { language, changeLanguage } = useContext(LanguageContext); // Use LanguageContext
+    const t = translations[language]; // Get translations for the current language
+
+    const dropdownRef = useRef(null); // Ref for the dropdown element
+
+    const handleLanguageChange = (newLanguage) => {
+        changeLanguage(newLanguage);
+        setShowLanguageDropdown(false); // Close dropdown after selection
+    };
+
+    const toggleDropdown = () => {
+        setShowLanguageDropdown(!showLanguageDropdown);
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowLanguageDropdown(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownRef]);
+
 
   return (
     <div className='navbar'> 
@@ -17,13 +50,35 @@ import { FaCartShopping } from "react-icons/fa6";
             
     </div>
     <ul className="nav-menu">
-        <li onClick={()=>{setMenu("Home")}}><Link style={{ textDecoration:"none"}} to="/">HOME</Link>{menu==="Home"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("About")}}><Link style={{ textDecoration:"none"}} to="/About">ABOUT</Link>{menu==="About"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("Contact")}}><Link style={{ textDecoration:"none"}} to="/Contact">CONTACT</Link>{menu==="Contact"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("Shop")}}><Link style={{ textDecoration:"none"}} to="/Shop">SHOP</Link>{menu==="Shop"?<hr/>:<></>}</li>
+        <li onClick={()=>{setMenu("Home")}}><Link style={{ textDecoration:"none"}} to="/">{t.home || 'HOME'}</Link>{menu==="Home"?<hr/>:<></>}</li>
+        <li onClick={()=>{setMenu("About")}}><Link style={{ textDecoration:"none"}} to="/About">{t.about || 'ABOUT'}</Link>{menu==="About"?<hr/>:<></>}</li>
+        <li onClick={()=>{setMenu("Contact")}}><Link style={{ textDecoration:"none"}} to="/Contact">{t.contact || 'CONTACT'}</Link>{menu==="Contact"?<hr/>:<></>}</li>
+        <li onClick={()=>{setMenu("Shop")}}><Link style={{ textDecoration:"none"}} to="/Shop">{t.shop || 'SHOP'}</Link>{menu==="Shop"?<hr/>:<></>}</li>
     </ul>
     <div className="nav-login-cart">
-      <Link to="/LoginSignup"><button className='login-btn' lang='ar'>تسجيل الدخول</button></Link>
+
+        {/* Language Switcher */}
+        <div className="language-switcher" ref={dropdownRef}> {/* Add ref to the switcher container */}
+            <div className="language-display" onClick={toggleDropdown}> {/* Clickable area */}
+                <FaGlobe className="language-icon" /> {/* React Globe Icon */}
+                <span className="language-code">{language.toUpperCase()}</span> {/* Display language code */}
+            </div>
+
+            {showLanguageDropdown && ( /* Conditionally render dropdown */
+                <div className="language-dropdown">
+                    <div onClick={() => handleLanguageChange('en')} className="language-option">
+                        <img src={ukFlag} alt="UK Flag" className="flag-icon" />
+                        <span>English</span>
+                    </div>
+                    <div onClick={() => handleLanguageChange('ar')} className="language-option">
+                        <img src={jordanFlag} alt="Jordanian Flag" className="flag-icon" />
+                        <span>العربية</span>
+                    </div>
+                </div>
+            )}
+        </div>
+
+      <Link to="/LoginSignup"><button className='login-btn' lang={language}>{t.login || 'Login'}</button></Link>
         
         <div className='cart-container'>
           <Link style={{ textDecoration:"none"}} to="/Cart"><button className='cart-btn'>

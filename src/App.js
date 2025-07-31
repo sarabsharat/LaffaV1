@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // Import useContext
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar/navbar.jsx';
 import Home from './pages/Home';
@@ -9,7 +9,8 @@ import Shop from './pages/Shop.jsx';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import LoginSignup from './pages/LoginSignup';
-import Footer from './components/footer/footer.jsx'; // Import the Footer component
+import Footer from './components/footer/footer.jsx';
+import { LanguageProvider, LanguageContext } from './LanguageContext.js'; // Import LanguageContext
 
 
 // Import product images
@@ -41,26 +42,31 @@ function App() {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
+  // LanguageContext is needed here to get the language for the lang attribute
+  const { language } = useContext(LanguageContext); // Get the current language from context
+
   return (
-    <div>
-      <BrowserRouter>
-      {/* Pass the total quantity to the Navbar */}
-      <Navbar totalQuantity={getTotalCartQuantity()} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route path="/Shop" element={<Shop />} />
-          <Route path="/Product" element={<Product />} >
-            <Route path=':productId' element={<Product />} />
-          </Route>
-          {/* Pass cart state and setter to the Cart component */}
-          <Route path="/Cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
-          <Route path="/LoginSignup" element={<LoginSignup />} />
-        </Routes>
-        <Footer /> {/* Add the Footer component here */}
-      </BrowserRouter>
-    </div>  
+    <LanguageProvider> {/* LanguageProvider wraps the content */}
+      <div className="app-wrapper" lang={language}> {/* Add the lang attribute here */}
+        <BrowserRouter>
+          {/* Pass the total quantity to the Navbar */}
+          <Navbar totalQuantity={getTotalCartQuantity()} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/About" element={<About />} />
+            <Route path="/Contact" element={<Contact />} />
+            <Route path="/Shop" element={<Shop />} />
+            <Route path="/Product" element={<Product />} >
+              <Route path=':productId' element={<Product />} />
+            </Route>
+            {/* Pass cart state and setter to the Cart component */}
+            <Route path="/Cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
+            <Route path="/LoginSignup" element={<LoginSignup />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </div>
+    </LanguageProvider>
   );
 }
 

@@ -1,7 +1,8 @@
 :root {
-  --purple: #22181f;
+  --darker-purple: #22181f;
     --gold:#9e6930;
     --hover-gold: #e1cba5; /* lighter gold */
+    --purple: #6C4A79; /* Define the darker purple color */
 }
 body{
   height: 100vh;
@@ -11,25 +12,7 @@ body{
   font-family: sans-serif;
 }
 
-@font-face {
-    font-family: 'Arabic';
-    src: url('../assets/arabic.ttf') format('truetype');
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'English';
-    src: url('../assets/english.ttf') format('truetype');
-    font-weight: normal;
-}
-
-:lang(ar) {
-    font-family: 'Arabic', sans-serif;
-}
-
-:lang(en){
-    font-family: 'English', sans-serif;
-}
+/* Moved to index.css for global application */
 
 
 .navbar {
@@ -39,7 +22,7 @@ body{
   background-color: var(--purple);
   padding: 15px 40px;
   color: var(--gold);
-  direction: rtl;
+  direction: rtl; /* Added direction: rtl; back */
 }
 
 .nav-logo img {
@@ -57,6 +40,7 @@ body{
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
   margin: 0;
 }
+
 .nav-menu hr{
     border:none;
     width: 80%;
@@ -126,7 +110,7 @@ body{
   color: var(--gold);
   padding: 8px 16px;
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 6px; 
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -158,4 +142,60 @@ body{
   padding: 2px 6px;
   font-size: 12px;
   font-weight: bold;
+}
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    margin-left: 20px; /* Adjusted margin for RTL */
+}
+
+.language-display {
+    display: flex;
+    align-items: center;
+}
+
+.language-icon {
+    margin-right: 5px;
+    font-size: 1.2em;
+    color: var(--gold); /* Set globe icon color to gold */
+}
+
+.language-code {
+    color: var(--gold); /* Set language code color to gold */
+    font-weight: bold;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Align right edge with the language switcher */
+  background-color: var(--darker-purple);
+  border: none;
+  border-radius: 5px;
+  padding: 5px 0;
+  z-index: 1000;
+  min-width: 120px;
+  /* Removed previous positioning attempts */
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    cursor: pointer;
+    color: var(--gold); /* Changed text color to gold */
+}
+
+.language-option:hover {
+    background-color: var(--purple); /* Hover background color */
+    color: #fff; /* White text color on hover */
+}
+
+.language-option img {
+    margin-left: 10px; /* Added gap next to the flag for RTL */
+    width: 20px;
+    height: auto;
 }

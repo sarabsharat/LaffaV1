@@ -8,6 +8,7 @@
   color: var(--gold); /* Changed text color to gold */
   min-height: 100px; /* Set a minimum height instead of fixed */
   justify-content: center; /* Vertically center content */
+  padding-top: 80px; /* Added responsive top padding - default */
 }
 
 .footer-logo {
@@ -63,6 +64,7 @@
     flex-direction: column;
     text-align: center;
     height: auto; /* Allow height to adjust on smaller screens */
+    padding-top: 40px; /* Adjusted top padding for smaller screens */
   }
 
   .footer-links {

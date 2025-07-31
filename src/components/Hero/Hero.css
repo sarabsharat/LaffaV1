@@ -5,8 +5,9 @@
   max-width: 1200px; /* Added max-width */
   margin: 0 auto; /* Centered the section */
   padding: 80px 20px; /* Adjusted padding */
-  background-color: #ffffff; /* Changed background to white */
-  color: #fff; /* This color might need to be adjusted for a white background */
+  background-color: #22181f; /* Set background to #22181f */
+  background-image: none; /* Remove any background image/gradient */
+  color: #fff; /* This color might need to be adjusted for visibility on dark background */
   gap: 20px; /* Reduced gap */
   box-sizing: border-box; /* Added box-sizing */
 }
@@ -20,13 +21,13 @@
   margin-top: 0;
   font-size: 4rem;
   margin-bottom: 20px;
-  color: var(--gold); /* This color should be visible on white */
+  color: var(--gold); /* This color should be visible on dark background */
 }
 
 .hero-content p {
   font-size: 1.2rem;
   margin-bottom: 30px;
-  color: #5c5c5c; /* Changed paragraph color to a darker shade for visibility on white */
+  color: #ccc; /* Changed paragraph color to a lighter shade for visibility on dark background */
 }
 
 .shop-btn {
