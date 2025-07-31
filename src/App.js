@@ -10,6 +10,7 @@ import Product from './pages/Product';
 import Cart from './pages/Cart';
 import LoginSignup from './pages/LoginSignup';
 import Footer from './components/footer/footer.jsx';
+import Profile from './pages/Profile';
 import { LanguageProvider, LanguageContext } from './LanguageContext.js'; // Import LanguageContext
 
 
@@ -53,12 +54,13 @@ function App() {
           <Navbar totalQuantity={getTotalCartQuantity()} />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/About" element={<About />} />
             <Route path="/Contact" element={<Contact />} />
             <Route path="/Shop" element={<Shop />} />
             <Route path="/Product" element={<Product />} >
-              <Route path=':productId' element={<Product />} />
-            </Route>
+            <Route path=':productId' element={<Product />} />
+            </Route>z
             {/* Pass cart state and setter to the Cart component */}
             <Route path="/Cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
             <Route path="/LoginSignup" element={<LoginSignup />} />

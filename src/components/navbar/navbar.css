@@ -23,6 +23,7 @@ body{
   padding: 15px 40px;
   color: var(--gold);
   direction: rtl; /* Added direction: rtl; back */
+  position: relative; /* Needed for absolute positioning of mobile menu */
 }
 
 .nav-logo img {
@@ -199,3 +200,96 @@ body{
     width: 20px;
     height: auto;
 }
+
+/* Hamburger Menu Styles */
+.hamburger-icon {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hamburger-icon div {
+  width: 100%;
+  height: 3px;
+  background-color: var(--gold);
+  transition: all 0.3s linear;
+}
+
+/* Mobile Menu Styles */
+.nav-menu-mobile {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--purple);
+  padding: 20px;
+  gap: 20px;
+  text-align: center;
+  display: none; /* Hidden by default */
+  z-index: 999; /* Ensure it's above other content */
+}
+
+/* Media Query for Tablets */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none; /* Hide regular menu */
+  }
+
+  .hamburger-icon {
+    display: flex; /* Show hamburger icon */
+  }
+
+  .navbar {
+    padding: 20px 20px; /* Increased vertical padding */
+  }
+
+  .nav-login-cart {
+    gap: 15px; /* Slightly increased gap */
+  }
+
+  .nav-menu-mobile.open {
+    display: flex !important; /* Use !important to ensure display */
+  }
+}
+
+/* Media Query for smaller phones */
+@media (max-width: 480px) {
+  .nav-logo img {
+    height: 150px; /* Adjust logo size for smaller screens */
+  }
+
+  .nav-login-cart {
+    gap: 10px; /* Reduce gap in login/cart section */
+  }
+
+  .login-btn {
+    padding: 6px 12px; /* Adjust button padding */
+    font-size: 14px;
+  }
+
+  .cart-count {
+    top: -5px;
+    right: -5px;
+    padding: 1px 4px;
+    font-size: 10px;
+  }
+
+  .language-switcher {
+    margin-left: 10px; /* Adjust language switcher margin */
+  }
+
+   .nav-menu-mobile li {
+    font-size: 16px; /* Adjust mobile menu font size */
+    padding: 8px 0; /* Adjusted vertical padding for very small screens */
+  }
+   .nav-menu-mobile.open {
+    display: flex !important; /* Use !important to ensure display */
+  }
+}
+
