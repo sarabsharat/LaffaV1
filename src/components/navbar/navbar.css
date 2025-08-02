@@ -7,7 +7,7 @@
 body{
   height: 100vh;
   margin: 0;
-  background: linear-gradient(to bottom, #22181f 0%, #281a27 100%);
+  background:var(--darker-purple);
   color: white;
   font-family: sans-serif;
 }

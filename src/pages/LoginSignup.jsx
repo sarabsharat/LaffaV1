@@ -304,16 +304,10 @@ const LoginSignup = () => {
     fontWeight: 500,
   };
 
-  // Define common inputProps for MDBInput
-  const commonInputProps = {
-    style: { background: 'transparent', color: '#1f0f2e' } // Text color inside input
-  };
-
   const purple1 = '#432e3f';
   const purple2 = '#221820';
   const accent = '#CFA3E1'; 
   const white = '#fff';
-  const inputBg = 'rgba(255,255,255,0.85)'; 
 
   // InputRow component with visible label
   const InputRow = ({ icon, label, children }) => (
@@ -358,7 +352,8 @@ const LoginSignup = () => {
               <h1
                 className="fw-bold"
                 style={{
-                  color: purple1,
+                  color: "#e0e0e0",
+                  padding: '0.5rem 0',
                   fontSize: '1.75rem',
                   margin: 0,
                   letterSpacing: '0.5px',
@@ -394,7 +389,6 @@ const LoginSignup = () => {
                     onChange={changeHandler}
                     placeholder="Enter your full name"
                     style={commonInputStyle}
-                    inputProps={commonInputProps}
                   />
                 </InputRow>
 
@@ -407,7 +401,6 @@ const LoginSignup = () => {
                     onChange={changeHandler}
                     placeholder="e.g., example@domain.com"
                     style={commonInputStyle}
-                    inputProps={commonInputProps}
                   />
                 </InputRow>
 
@@ -424,7 +417,6 @@ const LoginSignup = () => {
                         onChange={changeHandler}
                         readOnly
                         style={{ ...commonInputStyle, flex: '0 0 80px' }} // Adjusted width
-                        inputProps={commonInputProps}
                       />
                       <MDBInput
                         id="signupFormPhoneNumber"
@@ -435,7 +427,6 @@ const LoginSignup = () => {
                         onChange={changeHandler}
                         placeholder="e.g., 7xxxxxxx"
                         style={{ ...commonInputStyle, flex: 1 }}
-                        inputProps={commonInputProps}
                       />
                     </div>
                   </InputRow>
@@ -448,7 +439,6 @@ const LoginSignup = () => {
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder="Enter SMS code"
                       style={commonInputStyle}
-                      inputProps={commonInputProps}
                     />
                   </InputRow>
                 )}
@@ -463,7 +453,6 @@ const LoginSignup = () => {
                       onChange={changeHandler}
                       placeholder="Enter your password"
                       style={commonInputStyle}
-                      inputProps={commonInputProps}
                     />
                     <MDBIcon
                       fas
@@ -492,7 +481,6 @@ const LoginSignup = () => {
                       onChange={changeHandler}
                       placeholder="Repeat your password"
                       style={commonInputStyle}
-                      inputProps={commonInputProps}
                     />
                     <MDBIcon
                       fas
@@ -516,12 +504,13 @@ const LoginSignup = () => {
                     name="province"
                     value={formData.province}
                     onChange={changeHandler}
+                    disabled={!formData.province}
                     aria-label="Select Province"
                     style={{
                       appearance: 'none',
                       width: '100%',
                       ...commonInputStyle,
-                      color: formData.province ? commonInputProps.style.color : '#888', // Grey out placeholder
+                      color: formData.province ? '#1f0f2e' : '#888', // Dark text or grey placeholder
                     }}
                   >
                     <option value="" disabled>
@@ -546,7 +535,7 @@ const LoginSignup = () => {
                       appearance: 'none',
                       width: '100%',
                       ...commonInputStyle,
-                      color: formData.area ? commonInputProps.style.color : '#888', // Grey out placeholder
+                      color: formData.area ? '#1f0f2e' : '#888', // Dark text or grey placeholder
                     }}
                   >
                     <option value="" disabled>
@@ -569,7 +558,6 @@ const LoginSignup = () => {
                     onChange={changeHandler}
                     placeholder="e.g., Main Street"
                     style={commonInputStyle}
-                    inputProps={commonInputProps}
                   />
                 </InputRow>
 
@@ -660,7 +648,6 @@ const LoginSignup = () => {
                     onChange={changeHandler}
                     placeholder="e.g., example@domain.com"
                     style={commonInputStyle}
-                    inputProps={commonInputProps}
                   />
                 </InputRow>
 
@@ -674,7 +661,6 @@ const LoginSignup = () => {
                       onChange={changeHandler}
                       placeholder="Enter your password"
                       style={commonInputStyle}
-                      inputProps={commonInputProps}
                     />
                     <MDBIcon
                       fas
