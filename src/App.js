@@ -60,8 +60,8 @@ function App() {
             <Route path="/Shop" element={<Shop />} />
             <Route path="/Product" element={<Product />} >
             <Route path=':productId' element={<Product />} />
-            </Route>z
-            {/* Pass cart state and setter to the Cart component */}
+            </Route>
+         
             <Route path="/Cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
             <Route path="/LoginSignup" element={<LoginSignup />} />
           </Routes>

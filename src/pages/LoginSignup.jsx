@@ -17,35 +17,49 @@ import Image from "../components/assets/Front.png";
 
 const AREAS_BY_GOV = {
   "العاصمة (Amman)": [
-    "العبدلي", "الزرقاء الجديدة", "ماركا", "الدوار الرابع", "المهاجرين",
+    "العبدلي", "ماركا", "الدوار الرابع", "المهاجرين",
     "المدينة الرياضية", "خالد بن الوليد", "صويلح", "نقابة المهندسين", "عبدون",
     "الدوار الخامس", "الدوار السادس", "الشميساني", "جبل اللويبدة", "وادي صقرة",
     "جبل النزهة", "وسط البلد", "الجبيهة", "رأس العين", "الصويفية",
     "المدينة الصناعية", "الجامعة الأردنية", "حي نزال", "الشميساني الجديدة", "الرابية",
   ],
   "الزرقاء (Zarqa)": [
-    "الوسطية", "الحمة الشرقية", "الحمة الغربية", "الزرقاء البلد", "الجبل الأزرق",
-    "الزرقاء الجديدة",
+    "الزرقاء البلد", "الزرقاء الجديدة", "الرصيفة", "الجبل الأزرق", "الوسطية",
+    "الحمة الشرقية", "الحمة الغربية",
   ],
   "إربد (Irbid)": [
-    "إربد", "الرصيفة", "بريدة", "الجامعة الأردنية", "لواء بني كنانة",
-    "لواء كفرنجة", "لواء الرمثا", "لواء الطيبة",
+    "إربد", "لواء بني كنانة", "لواء الرمثا", "لواء الطيبة", "لواء الكورة",
+    "لواء المزار الشمالي",
   ],
-  "الكرك (Karak)": ["الكرك", "لواء القصر", "لواء الشوبك", "لواء المزار", "لواء البتراء"],
+  "الكرك (Karak)": [
+    "الكرك", "لواء القصر", "لواء المزار", "لواء عي", "لواء الأغوار الجنوبية"
+  ],
   "المفرق (Mafraq)": [
-    "المفرق", "لواء البادية الشمالية الشرقية", "لواء البادية الشمالية الغربية", "لواء الحمرة",
+    "المفرق", "لواء البادية الشمالية الشرقية", "لواء البادية الشمالية الغربية", "لواء الحمرة"
   ],
   "البلقاء (Balqa)": [
-    "السلط", "لواء الفحيص", "لواء عين الباشا", "لواء الأشرفية", "لواء الرمثا",
-    "لواء بسطا",
+    "السلط", "الفحيص", "عين الباشا", "دير علا", "الأشرفية"
   ],
-  "معان (Ma'an)": ["معان", "لواء الشوبك", "لواء المريغة", "لواء القطرانة", "لواء الجفر"],
-  "الطفيلة (Tafileh)": ["الطفيلة", "لواء القادسية", "لواء الحسا"],
-  "العقبة (Aqaba)": ["العقبة"],
-  "جرش (Jerash)": ["جرش", "لواء القادسية", "لواء المتوازن"],
-  "عجلون (Ajloun)": ["عجلون", "لواء كفرنجة"],
-  "المأدبة (Madaba)": ["مادبا", "لواء الشوبك"],
+  "معان (Ma'an)": [
+    "معان", "لواء الشوبك", "لواء المريغة", "لواء القطرانة", "لواء الجفر"
+  ],
+  "الطفيلة (Tafileh)": [
+    "الطفيلة", "لواء القادسية", "لواء الحسا"
+  ],
+  "العقبة (Aqaba)": [
+    "العقبة"
+  ],
+  "جرش (Jerash)": [
+    "جرش", "برما", "ساكب"
+  ],
+  "عجلون (Ajloun)": [
+    "عجلون", "لواء كفرنجة", "عنجرة"
+  ],
+  "مادبا (Madaba)": [
+    "مادبا", "ذيبان"
+  ],
 };
+
 
 const LoginSignup = () => {
   const [state, setState] = useState('Login');
@@ -54,7 +68,7 @@ const LoginSignup = () => {
     email: '',
     password: '',
     repeatPassword: '',
-    countryCode: '+962', // Fixed for Jordan
+    countryCode: '+962', 
     phoneNumber: '',
     province: '',
     area: '',
@@ -405,31 +419,56 @@ const LoginSignup = () => {
                 </InputRow>
 
                 {!showCodeInput ? (
-                  <InputRow icon="phone" label="Phone Number">
-                    <div className="phone-input-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
-                      <img src={JOR_flag} alt="Jordanian flag" style={{ height: '20px' }} /> {/* Added flag image */}
-                      <MDBInput
-                        id="signupFormPhoneCode"
-                        type="text"
-                        className="country-code-input"
-                        name="countryCode"
-                        value={formData.countryCode}
-                        onChange={changeHandler}
-                        readOnly
-                        style={{ ...commonInputStyle, flex: '0 0 80px' }} // Adjusted width
-                      />
-                      <MDBInput
-                        id="signupFormPhoneNumber"
-                        type="tel"
-                        className="phone-number-input"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={changeHandler}
-                        placeholder="e.g., 7xxxxxxx"
-                        style={{ ...commonInputStyle, flex: 1 }}
-                      />
-                    </div>
-                  </InputRow>
+                 <InputRow icon="phone" label="Phone Number">
+                 <div
+                   className="phone-input-container"
+                   style={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '0.5rem',
+                     width: '100%',
+                     border: '1px solid #ccc',
+                     borderRadius: '12px',
+                     overflow: 'hidden',
+                     height: '40px',
+                     backgroundColor: '#f2f2f2',
+                   }}
+                 >
+                   {/* Flag + Country Code */}
+                   <div
+                     style={{
+                       display: 'flex',
+                       alignItems: 'center',
+                       flexBasis: '30%',
+                       justifyContent: 'center',
+                       borderRight: '1px solid #ccc',
+                       backgroundColor: '#eaeaea',
+                       padding: '0 0.5rem',
+                     }}
+                   >
+                     <img src={JOR_flag} alt="Jordanian flag" style={{ height: '20px', marginRight: '0.25rem' }} />
+                     <span style={{ fontWeight: 600 }}>{formData.countryCode}</span>
+                   </div>
+               
+                   {/* Phone Number */}
+                   <input
+                     type="tel"
+                     name="phoneNumber"
+                     value={formData.phoneNumber}
+                     onChange={changeHandler}
+                     placeholder="e.g., 7xxxxxxx"
+                     style={{
+                       flex: 1,
+                       border: 'none',
+                       outline: 'none',
+                       padding: '0 0.75rem',
+                       fontSize: '1rem',
+                       backgroundColor: 'transparent',
+                     }}
+                   />
+                 </div>
+               </InputRow>
+               
                 ) : (
                   <InputRow icon="mobile-alt" label="Verification Code">
                     <MDBInput
@@ -500,55 +539,54 @@ const LoginSignup = () => {
                 </InputRow>
 
                 <InputRow icon="globe" label="Province">
-                  <select
-                    name="province"
-                    value={formData.province}
-                    onChange={changeHandler}
-                    disabled={!formData.province}
-                    aria-label="Select Province"
-                    style={{
-                      appearance: 'none',
-                      width: '100%',
-                      ...commonInputStyle,
-                      color: formData.province ? '#1f0f2e' : '#888', // Dark text or grey placeholder
-                    }}
-                  >
-                    <option value="" disabled>
-                      Select Province
-                    </option>
-                    {Object.keys(AREAS_BY_GOV).map((gov) => (
-                      <option key={gov} value={gov}>
-                        {gov}
-                      </option>
-                    ))}
-                  </select>
-                </InputRow>
+        <select
+          name="province"
+          value={formData.province}
+          onChange={changeHandler}
+          aria-label="Select Province"
+          style={{
+            ...commonInputStyle,
+            appearance: "none",
+            width: "100%",
+            color: formData.province ? "#1f0f2e" : "#888",
+          }}
+        >
+          <option value="" disabled>
+            Select Province
+          </option>
+          {Object.keys(AREAS_BY_GOV).map((gov) => (
+            <option key={gov} value={gov}>
+              {gov}
+            </option>
+          ))}
+        </select>
+      </InputRow>
 
-                <InputRow icon="city" label="Area">
-                  <select
-                    name="area"
-                    value={formData.area}
-                    onChange={changeHandler}
-                    disabled={!formData.province}
-                    aria-label="Select Area"
-                    style={{
-                      appearance: 'none',
-                      width: '100%',
-                      ...commonInputStyle,
-                      color: formData.area ? '#1f0f2e' : '#888', // Dark text or grey placeholder
-                    }}
-                  >
-                    <option value="" disabled>
-                      Select Area
-                    </option>
-                    {(AREAS_BY_GOV[formData.province] || []).map((area) => (
-                      <option key={area} value={area}>
-                        {area}
-                      </option>
-                    ))}
-                  </select>
-                </InputRow>
-
+      {/* Area Select */}
+      <InputRow icon="city" label="Area">
+        <select
+          name="area"
+          value={formData.area}
+          onChange={changeHandler}
+          disabled={!formData.province} // Disabled until province selected
+          aria-label="Select Area"
+          style={{
+            ...commonInputStyle,
+            appearance: "none",
+            width: "100%",
+            color: formData.area ? "#1f0f2e" : "#888",
+          }}
+        >
+          <option value="" disabled>
+            Select Area
+          </option>
+          {(AREAS_BY_GOV[formData.province] || []).map((area) => (
+            <option key={area} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </InputRow>
                 <InputRow icon="road" label="Street Name">
                   <MDBInput
                     id="signupFormStreet"

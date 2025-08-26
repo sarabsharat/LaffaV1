@@ -4,10 +4,10 @@
   align-items: center;
   max-width: 1200px; /* Added max-width */
   margin: 0 auto; /* Centered the section */
-  padding: 80px 20px; /* Adjusted padding */
+  padding: 10px 20px;
   background-color: #22181f; /* Set background to #22181f */
   background-image: none; /* Remove any background image/gradient */
-  color: #fff; /* This color might need to be adjusted for visibility on dark background */
+  color: #fff;
   gap: 20px; /* Reduced gap */
   box-sizing: border-box; /* Added box-sizing */
 }
@@ -27,16 +27,16 @@
 .hero-content p {
   font-size: 1.2rem;
   margin-bottom: 30px;
-  color: #ccc; /* Changed paragraph color to a lighter shade for visibility on dark background */
+  color: #ccc;
 }
 
 .shop-btn {
   padding: 12px 28px;
-  font-size: 1rem;
-  background-color: var(--gold);
-  color: #22181f; /* This color should be visible on a gold button */
+  font-size: 2rem !important;
+  background-color: var(--gold) !important;
+  color: #22181f;
   border: none;
-  border-radius: 8px; /* Corrected border-radius unit */
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
@@ -58,13 +58,13 @@
   box-sizing: border-box; /* Added box-sizing */
 }
 
-/* Add responsive adjustments */
+
 @media (max-width: 768px) {
   .hero-section {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    text-align: center; /* Center text */
-    gap: 15px; /* Reduced gap for smaller screens */
-    padding: 40px 15px; /* Adjusted padding for smaller screens */
+    flex-direction: column; 
+    text-align: center;
+    gap: 15px; 
+    padding: 40px 15px; 
   }
 
   .hero-content,

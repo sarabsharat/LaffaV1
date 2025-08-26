@@ -7,10 +7,6 @@ import { FaGlobe } from "react-icons/fa"; // Import the globe icon
 import translations from '../translations'; // Import translations
 import { LanguageContext } from '../../LanguageContext'; // We will create this Context
 
-// Import flags
-import ukFlag from "../assets/UK_flag.png";
-import jordanFlag from '../assets/JOR_flag.png'; 
-
 // Receive totalQuantity as a prop
  const Navbar = ({ totalQuantity }) => {
     const [menu, setMenu] = useState("Home");
@@ -100,11 +96,11 @@ import jordanFlag from '../assets/JOR_flag.png';
             {showLanguageDropdown && ( /* Conditionally render dropdown */
                 <div className="language-dropdown">
                     <div onClick={() => handleLanguageChange('en')} className="language-option">
-                        <img src={ukFlag} alt="UK Flag" className="flag-icon" />
+                    <i class="flag flag-united-kingdom"></i>
                         <span>English</span>
                     </div>
                     <div onClick={() => handleLanguageChange('ar')} className="language-option">
-                        <img src={jordanFlag} alt="Jordanian Flag" className="flag-icon" />
+                    <i class="flag flag-jordan"></i>
                         <span>العربية</span>
                     </div>
                 </div>

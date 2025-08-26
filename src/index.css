@@ -4,8 +4,7 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #22181f; /* Set body background to #22181f */
+  background-color: #22181f !important;
 }
 
 code {
@@ -14,24 +13,25 @@ code {
 }
 
 .container {
-  max-width: 1200px; /* Adjust as needed */
+  max-width: 1200px; 
   margin: 0 auto;
-  padding: 0 15px; /* Add some padding on the sides */
+  padding: 0 15px; 
+  background-color: #22181f;
+
 }
 
 @font-face {
     font-family: 'Arabic';
     src: url('./components/assets/arabic.ttf') format('truetype');
     font-weight: normal;
-    font-display: swap; /* Added font-display */
+    font-display: swap; 
 }
 
 @font-face {
     font-family: 'English';
     src: url('./components/assets/english.ttf') format('truetype');
     font-weight: normal;
-    font-display: swap; /* Added font-display */
-}
+    font-display: swap; }
 
 :lang(ar) {
     font-family: 'Arabic', sans-serif;

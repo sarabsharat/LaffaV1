@@ -1,112 +1,152 @@
+/* Profile.css */
 
-
-.profile-wrapper {
+/* Define color variables for consistency */
+:root {
+   --purple1: #432e3f;
+   --purple2: #221820;
+   --purple3: #764ba2;
+   --dark-text: #1f0f2e;
+   --border-color: rgba(255, 255, 255, 0.08);
+   --light-bg: rgba(255, 255, 255, 0.85);
+   --white: #ffffff;
+   --accent: #CFA3E1;
+ }
+ 
+ /* Container for the profile page */
+ .profile-wrapper {
    display: flex;
    justify-content: center;
    align-items: center;
    min-height: 100vh;
+   background: linear-gradient(135deg, var(--purple2) 0%, var(--purple1) 100%);
+   padding: 2rem;
+ }
+ 
+ .profile-container {
    width: 100%;
-}
-
-.profile-container {
-   background-color: #fff;
-   border-radius: 10px;
-   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-   padding: 30px;
-   width: 320px;
+   max-width: 1100px;
+   background: rgba(255, 255, 255, 0.05);
+   border-radius: 30px;
+   box-shadow: 0 30px 60px -10px rgba(108, 74, 121, 0.4);
+   overflow: hidden;
+   backdrop-filter: blur(12px);
+ }
+ 
+ /* Title styling */
+ .profile-title {
+   color: #e0e0e0;
+   font-size: 1.75rem;
+   margin: 0;
+   padding: 0.5rem 0;
    text-align: center;
-}
-
-.profile-title {
-   font-size: 2em;
-   color: #333;
-   margin-bottom: 20px;
-}
-
-.profile-info-panel {
-   margin-bottom: 25px;
-   padding: 15px;
-   border: 1px solid #ddd;
-   border-radius: 8px;
-   background-color: #f9f9f9;
-}
-
-.profile-info-panel p {
-   font-size: 1.1em;
-   color: #555;
-   margin-bottom: 10px;
-}
-
-.current-name {
-   font-weight: bold;
-   color: #3498db;
-}
-
-.profile-info-panel input[type="text"] {
-   width: calc(100% - 20px);
-   padding: 10px;
-   border: 1px solid #ddd;
-   border-radius: 5px;
-   font-size: 1em;
-   box-sizing: border-box;
-   margin-bottom: 10px;
-   transition: border-color 0.3s;
-}
-
-.profile-info-panel input[type="text"]:focus {
-   outline: none;
-   border-color: #3498db;
-   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
-
-.profile-actions {
+ }
+ 
+ /* Input row styling */
+ .input-row-container {
    display: flex;
-   flex-direction: column;
-   gap: 15px; /* Spacing between buttons */
-}
-
-/* Base button styling */
-.profile-actions button,
-.profile-info-panel button {
-   padding: 12px;
-   font-size: 1em;
-   font-weight: bold;
+   align-items: center;
+   margin-bottom: 1rem;
+   width: 100%;
+ }
+ 
+ .input-row-icon {
+   margin-right: 15px;
+   min-width: 32px;
+   text-align: center;
+ }
+ 
+ .input-row-content {
+   flex-grow: 1;
+ }
+ 
+ .input-row-label {
+   margin-bottom: 0.25rem;
+   display: block;
+   color: var(--white);
+   font-weight: 500;
+ }
+ 
+ /* Input field styles */
+ .profile-info-panel input[type="text"],
+ .profile-info-panel input[type="email"],
+ .profile-info-panel input[type="tel"],
+ .profile-info-panel select {
+   width: 100%;
+   background: var(--light-bg);
+   border-radius: 12px;
+   border: 1px solid var(--border-color);
+   padding: 0.75rem 1rem;
+   color: var(--dark-text);
+   font-weight: 500;
+   transition: all 0.3s ease;
+ }
+ 
+ .profile-info-panel input[type="text"]:focus,
+ .profile-info-panel input[type="email"]:focus,
+ .profile-info-panel input[type="tel"]:focus,
+ .profile-info-panel select:focus {
+   outline: none;
+   border-color: var(--purple3);
+ }
+ 
+ /* Button styles */
+ button {
+   background: linear-gradient(135deg, var(--purple1), var(--purple2));
+   color: white;
    border: none;
-   border-radius: 5px;
+   border-radius: 12px;
+   padding: 0.75rem 1.5rem;
    cursor: pointer;
-   transition: background-color 0.3s, transform 0.2s;
-   text-decoration: none; /* Remove underline for buttons inside a link */
-}
-
-.profile-actions button:hover,
-.profile-info-panel button:hover {
-   transform: translateY(-2px);
-}
-
-/* Specific button styles */
-.change-name-button,
-.orders-button,
-.cart-button {
-   background-color: #3498db; /* Blue color matching the login form */
+   margin-top: 0.5rem;
+   font-weight: 600;
+   transition: all 0.3s ease;
+ }
+ 
+ button:hover {
+   background: #5a3e4f;
+ }
+ 
+ button:active {
+   transform: scale(0.98);
+ }
+ 
+ /* Error message styling */
+ .error-message {
+   color: #ff6b6b;
+   font-size: 0.9rem;
+   margin-top: 0.5rem;
+   text-align: center;
+ }
+ 
+ /* Google login button */
+ .loginsignup-google-btn {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   padding: 0.75rem;
+   border-radius: 12px;
+   border: 1px solid rgba(255, 255, 255, 0.15);
+   background: rgba(255, 255, 255, 0.08);
+   cursor: pointer;
    color: #fff;
-}
-
-.change-name-button:hover,
-.orders-button:hover,
-.cart-button:hover {
-   background-color: #2980b9; /* Darker blue on hover */
-}
-
-.logout-button {
-   background-color: #e74c3c; /* Red color for logout */
-   color: #fff;
-}
-
-.logout-button:hover {
-   background-color: #c0392b; /* Darker red on hover */
-}
-
-/* Ensure the Link component doesn't mess with button styling */
-.profile-actions a {
-   display: block; /* Make the link a block element to contain the button */
-}
+   font-weight: 500;
+   font-size: 0.9rem;
+   backdrop-filter: blur(6px);
+ }
+ 
+ /* Responsive design */
+ @media (max-width: 768px) {
+   .profile-wrapper {
+     padding: 1rem;
+   }
+ 
+   .profile-container {
+     padding: 1.5rem;
+   }
+ 
+   .profile-title {
+     font-size: 1.5rem;
+   }
+ }
+ 

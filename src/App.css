@@ -1,0 +1,33 @@
+.btn-num2{
+background: linear-gradient(135deg, var(--purple1), var(--purple2));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-num1 {
+    background: linear-gradient(135deg, var(--gold), var(--hover-gold)) !important;
+    color: var(--purple1) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    cursor: pointer;
+    box-shadow: none !important;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-num1:hover {
+    background: linear-gradient(135deg, var(--hover-gold), var(--gold)) !important;
+    transition: all 0.3s ease-in;
+    transform: scale(105%);
+    color: var(--purple2) !important;
+  }
+  
+
