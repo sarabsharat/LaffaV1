@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth, db } from '../firebase.js';
 import { MDBContainer, MDBCard, MDBInput, MDBIcon } from 'mdb-react-ui-kit';
 import './Profile.css';
 
@@ -15,6 +16,33 @@ const Profile = () => {
     const [isEditingPhone, setIsEditingPhone] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+
+    // Firebase Auth & Firestore integration
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                setUserName(user.displayName || "User Name");
+                setUserEmail(user.email || "user.email@example.com");
+                setUserPhone(user.phoneNumber || "+962 7XXXXXXX");
+
+                const docRef = db.collection("users").doc(user.uid);
+                const docSnap = await docRef.get();
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    setUserName(data.name || user.displayName || "User Name");
+                    setUserPhone(data.phone || user.phoneNumber || "+962 7XXXXXXX");
+                } else {
+                    await docRef.set({
+                        name: user.displayName || "User Name",
+                        email: user.email,
+                        phone: user.phoneNumber || ""
+                    });
+                }
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     // Define color variables for consistency
     const purple1 = '#432e3f';
@@ -41,10 +69,16 @@ const Profile = () => {
         navigate('/orders');
     };
 
-    const handleChangeName = (e) => {
+    const handleChangeName = async (e) => {
         e.preventDefault();
         if (newName.trim()) {
             setUserName(newName);
+
+            const user = auth.currentUser;
+            if (user) {
+                await db.collection("users").doc(user.uid).update({ name: newName });
+            }
+
             setNewName('');
             setIsEditingName(false);
             setErrorMessage('');
@@ -63,12 +97,19 @@ const Profile = () => {
         setErrorMessage('');
     };
 
-    const handleSaveEmail = (e) => {
+    const handleSaveEmail = async (e) => {
         e.preventDefault();
         if (!newEmail.includes('@') || !newEmail.includes('.')) {
             setErrorMessage('Please enter a valid email address.');
             return;
         }
+
+        const user = auth.currentUser;
+        if (user) {
+            await user.updateEmail(newEmail); // update in Auth
+            await db.collection("users").doc(user.uid).update({ email: newEmail });
+        }
+
         setUserEmail(newEmail);
         setIsEditingEmail(false);
         setErrorMessage('');
@@ -86,30 +127,26 @@ const Profile = () => {
         setErrorMessage('');
     };
     
-    const handleSavePhone = (e) => {
+    const handleSavePhone = async (e) => {
         e.preventDefault();
-    
-        // Strip spaces or symbols
         const digitsOnly = newPhone.replace(/\D/g, '');
-    
-        // --- Conditions ---
-        if (digitsOnly.length !== 9) {
-            setErrorMessage('❌ Phone number must be exactly 9 digits (e.g., 7XXXXXXXX).');
+
+        if (digitsOnly.length !== 9 || !digitsOnly.startsWith('7')) {
+            setErrorMessage('❌ Phone number must be exactly 9 digits and start with 7.');
             return;
         }
-    
-        if (!digitsOnly.startsWith('7')) {
-            setErrorMessage('❌ Phone number must start with 7 (e.g., 7XXXXXXXX).');
-            return;
-        }
-    
-        // --- Success ---
-        const formattedPhone = `+962 ${digitsOnly}`; // Added a space for better readability
+
+        const formattedPhone = `+962 ${digitsOnly}`;
         setUserPhone(formattedPhone);
+
+        const user = auth.currentUser;
+        if (user) {
+            await db.collection("users").doc(user.uid).update({ phone: formattedPhone });
+        }
+
         setIsEditingPhone(false);
         setErrorMessage('');
     };
-    
 
     const handleEditPhone = () => {
         setNewPhone(userPhone);

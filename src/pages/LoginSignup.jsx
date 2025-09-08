@@ -6,14 +6,11 @@ import {
   MDBIcon,
   MDBCheckbox,
 } from 'mdb-react-ui-kit';
-import firebase, { auth } from '../firebase';
+import firebase, { auth, db } from '../firebase';
 import googleLogo from '../components/assets/google-logo.png';
-import JOR_flag from '../components/assets/JOR_flag.png'; // Import the Jordanian flag image
-import './LoginSignup.css'; // Ensure this file exists and is used for styling
+import JOR_flag from '../components/assets/JOR_flag.png';
+import './LoginSignup.css';
 import Image from "../components/assets/Front.png";
-
-
-// Ensure Firebase is initialized before using this component
 
 const AREAS_BY_GOV = {
   "العاصمة (Amman)": [
@@ -60,7 +57,6 @@ const AREAS_BY_GOV = {
   ],
 };
 
-
 const LoginSignup = () => {
   const [state, setState] = useState('Login');
   const [formData, setFormData] = useState({
@@ -86,17 +82,15 @@ const LoginSignup = () => {
   const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const recaptchaContainerRef = useRef(null); // Ref for reCAPTCHA container
-
+  const recaptchaContainerRef = useRef(null);
   const fullPhoneNumber = formData.countryCode + formData.phoneNumber;
 
   const changeHandler = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, type, checked, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
-    setErrorMessage(''); // Clear error message on input change
   };
 
   const togglePasswordVisibility = () => {
@@ -107,62 +101,52 @@ const LoginSignup = () => {
     setRepeatPasswordVisible(!repeatPasswordVisible);
   };
 
-  // Initialize reCAPTCHA when state changes to 'Sign Up' and container is available
+  // Initialize reCAPTCHA when state changes to 'Sign Up'
   useEffect(() => {
-    let verifier = null;
     if (state === 'Sign Up' && recaptchaContainerRef.current && !recaptchaVerifier) {
-      verifier = new firebase.auth.RecaptchaVerifier(recaptchaContainerRef.current, {
-        size: 'invisible',
-        callback: () => { /* console.log('reCAPTCHA solved'); */ },
-        'expired-callback': () => {
-          setErrorMessage('reCAPTCHA expired. Please try sending the code again.');
-          if (recaptchaVerifier) {
-            try { recaptchaVerifier.clear(); } catch (e) { /* console.error("Error clearing recaptcha", e); */ }
-          }
-          setRecaptchaVerifier(null); // Clear verifier to force re-render or re-initialization
-        },
-      });
-      verifier.render().then(widgetId => {
-        // console.log('reCAPTCHA rendered with widgetId:', widgetId);
-      }).catch(err => {
-        console.error("reCAPTCHA render error:", err);
-        setErrorMessage('Failed to load reCAPTCHA. Please refresh the page.');
-      });
-      setRecaptchaVerifier(verifier);
-    }
-
-    // Cleanup function
-    return () => {
-      if (verifier) {
-        try { verifier.clear(); } catch (e) { /* console.error("Error clearing recaptcha on unmount", e); */ }
+      try {
+        const verifier = new firebase.auth.RecaptchaVerifier(recaptchaContainerRef.current, {
+          size: 'invisible',
+          callback: () => console.log('reCAPTCHA solved'),
+          'expired-callback': () => {
+            setErrorMessage('reCAPTCHA expired. Please try sending the code again.');
+            setRecaptchaVerifier(null);
+          },
+        });
+        
+        verifier.render().then(widgetId => {
+          console.log('reCAPTCHA rendered with widgetId:', widgetId);
+          setRecaptchaVerifier(verifier);
+        }).catch(err => {
+          console.error("reCAPTCHA render error:", err);
+          setErrorMessage('Failed to load reCAPTCHA. Please refresh the page.');
+        });
+      } catch (error) {
+        console.error("Error creating reCAPTCHA verifier:", error);
+        setErrorMessage('Failed to initialize reCAPTCHA. Please refresh the page.');
       }
-      // If recaptchaVerifier is in state, clear it only if it's the one we created in this effect run
-      // This prevents clearing a new verifier if the effect runs multiple times quickly
-      // setRecaptchaVerifier(null); // Removed to avoid clearing verifier prematurely
-    };
-  }, [state]); // Depend only on state and recaptchaContainerRef.current implicitly
+    }
+  }, [state]);
 
-   // Effect to handle cleanup specifically when recaptchaVerifier changes
-   useEffect(() => {
+  // Cleanup reCAPTCHA when component unmounts
+  useEffect(() => {
     return () => {
       if (recaptchaVerifier) {
         try {
           recaptchaVerifier.clear();
-          // console.log("Recaptcha cleared on recaptchaVerifier change");
         } catch (e) {
-          console.error("Error clearing recaptcha on recaptchaVerifier change", e);
+          console.error("Error clearing recaptcha:", e);
         }
       }
     };
-  }, [recaptchaVerifier]); // Depend on recaptchaVerifier for cleanup
-
+  }, [recaptchaVerifier]);
 
   const validateSignupForm = () => {
     if (!formData.username || !formData.email || !formData.password || !formData.repeatPassword || !formData.phoneNumber || !formData.province || !formData.area || !formData.street) {
       setErrorMessage('All fields are required.');
       return false;
     }
-    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setErrorMessage('Please enter a valid email address.');
       return false;
     }
@@ -182,14 +166,9 @@ const LoginSignup = () => {
   };
 
   const sendVerificationCode = async () => {
-    setErrorMessage(''); // Clear previous errors
-    if (!validateSignupForm()) {
-      return;
-    }
-    if (!formData.phoneNumber) {
-      setErrorMessage('Please enter your phone number.');
-      return;
-    }
+    setErrorMessage('');
+    if (!validateSignupForm()) return;
+    
     if (!recaptchaVerifier) {
       setErrorMessage('reCAPTCHA not ready yet. Please wait a moment or refresh.');
       return;
@@ -200,18 +179,17 @@ const LoginSignup = () => {
       const confirmation = await auth.signInWithPhoneNumber(fullPhoneNumber, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setShowCodeInput(true);
-      setErrorMessage('Verification code sent to your WhatsApp/phone.'); // Use error message area for success
+      setErrorMessage('Verification code sent to your WhatsApp/phone.');
     } catch (err) {
       console.error('sendVerificationCode error', err);
-      setErrorMessage('Failed to send code. Check the number and try again. (Error: ' + err.message + ')');
-      // If reCAPTCHA expired, it will be handled by its callback
+      setErrorMessage('Failed to send code. Check the number and try again.');
     } finally {
       setIsCodeSending(false);
     }
   };
 
   const verifyCodeAndSignup = async () => {
-    setErrorMessage(''); // Clear previous errors
+    setErrorMessage('');
     if (!verificationCode) {
       setErrorMessage('Enter the verification code.');
       return;
@@ -224,31 +202,26 @@ const LoginSignup = () => {
     setIsSigningUp(true);
     try {
       await confirmationResult.confirm(verificationCode);
-      // phone is verified — proceed to backend signup
-      let responseData;
-      const response = await fetch('http://localhost:4000/signup', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json', // Changed to application/json
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          phone: fullPhoneNumber,
-          phoneVerified: true,
-        }),
+      
+      // Create user with email and password
+      const userCredential = await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+      const user = userCredential.user;
+      
+      // Save user data to Firestore
+      await db.collection("users").doc(user.uid).set({
+        name: formData.username,
+        email: user.email,
+        phone: fullPhoneNumber,
+        province: formData.province,
+        area: formData.area,
+        street: formData.street,
+        createdAt: new Date()
       });
-      responseData = await response.json();
 
-      if (responseData?.success) {
-        localStorage.setItem('auth-token', responseData.token);
-        window.location.replace('/');
-      } else {
-        setErrorMessage(responseData?.errors || 'Signup failed. Please try again.');
-      }
+      window.location.replace("/profile");
     } catch (err) {
       console.error('verifyCodeAndSignup error', err);
-      setErrorMessage('Code verification failed. Please check the code and try again. (Error: ' + err.message + ')');
+      setErrorMessage('Code verification failed. Please check the code and try again.');
     } finally {
       setIsSigningUp(false);
     }
@@ -259,7 +232,7 @@ const LoginSignup = () => {
       setErrorMessage('Email and password are required.');
       return false;
     }
-    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setErrorMessage('Please enter a valid email address.');
       return false;
     }
@@ -267,37 +240,20 @@ const LoginSignup = () => {
   };
 
   const login = async () => {
-    setErrorMessage(''); // Clear previous errors
-    if (!validateLoginForm()) {
-      return;
-    }
+    setErrorMessage('');
+    if (!validateLoginForm()) return;
 
-    let responseData;
     try {
-      const response = await fetch('http://localhost:4000/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json', // Changed to application/json
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      responseData = await response.json();
-
-      if (responseData?.success) {
-        localStorage.setItem('auth-token', responseData.token);
-        window.location.replace('/');
-      } else {
-        setErrorMessage(responseData?.errors || 'Login failed. Please check your credentials.');
-      }
+      await auth.signInWithEmailAndPassword(formData.email, formData.password);
+      window.location.replace('/');
     } catch (err) {
       console.error('Login error:', err);
-      setErrorMessage('An error occurred during login. Please try again later.');
+      setErrorMessage('Login failed. Please check your credentials.');
     }
   };
 
   const handleGoogleLogin = async () => {
-    setErrorMessage(''); // Clear previous errors
+    setErrorMessage('');
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
       await auth.signInWithPopup(provider);
@@ -308,14 +264,42 @@ const LoginSignup = () => {
     }
   };
 
-  // Define common styles for inputs
+  const handleEmailPasswordSignup = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+    if (!validateSignupForm()) return;
+
+    try {
+      // Create user in Firebase Auth
+      const userCredential = await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+      const user = userCredential.user;
+
+      // Save extra profile data in Firestore
+      await db.collection("users").doc(user.uid).set({
+        name: formData.username,
+        email: user.email,
+        phone: fullPhoneNumber,
+        province: formData.province,
+        area: formData.area,
+        street: formData.street,
+        createdAt: new Date()
+      });
+
+      window.location.replace("/profile");
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
+
+  // Common styles
   const commonInputStyle = {
     background: 'rgba(255,255,255,0.85)',
     borderRadius: '12px',
-    border: `1px solid #221820`, // purple2
+    border: '1px solid #221820',
     padding: '0.75rem 1rem',
-    color: '#1f0f2e', // Dark text for contrast on light background
+    color: '#1f0f2e',
     fontWeight: 500,
+    width: '100%'
   };
 
   const purple1 = '#432e3f';
@@ -323,14 +307,16 @@ const LoginSignup = () => {
   const accent = '#CFA3E1'; 
   const white = '#fff';
 
-  // InputRow component with visible label
+  // InputRow component
   const InputRow = ({ icon, label, children }) => (
-    <div className="input-row-container"> {/* Added a class for potential CSS styling */}
+    <div className="input-row-container">
       <div className="input-row-icon">
-        <MDBIcon fas icon={icon + ' me-3'} size="lg" style={{ color: white , minWidth: 32 }} />
+        <MDBIcon fas icon={icon} size="lg" style={{ color: white, minWidth: 32 }} />
       </div>
       <div className="input-row-content">
-        <label className="input-row-label" style={{ color: white, fontWeight: 500, marginBottom: '0.25rem', display: 'block' }}>{label}</label>
+        <label className="input-row-label" style={{ color: white, fontWeight: 500, marginBottom: '0.25rem', display: 'block' }}>
+          {label}
+        </label>
         {children}
       </div>
     </div>
@@ -347,7 +333,7 @@ const LoginSignup = () => {
           backdropFilter: 'blur(12px)',
           background: 'rgba(255,255,255,0.05)',
           boxShadow: '0 30px 60px -10px rgba(108,74,121,0.4)',
-          border: `1px solid rgba(255,255,255,0.08)`,
+          border: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -419,56 +405,55 @@ const LoginSignup = () => {
                 </InputRow>
 
                 {!showCodeInput ? (
-                 <InputRow icon="phone" label="Phone Number">
-                 <div
-                   className="phone-input-container"
-                   style={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '0.5rem',
-                     width: '100%',
-                     border: '1px solid #ccc',
-                     borderRadius: '12px',
-                     overflow: 'hidden',
-                     height: '40px',
-                     backgroundColor: '#f2f2f2',
-                   }}
-                 >
-                   {/* Flag + Country Code */}
-                   <div
-                     style={{
-                       display: 'flex',
-                       alignItems: 'center',
-                       flexBasis: '30%',
-                       justifyContent: 'center',
-                       borderRight: '1px solid #ccc',
-                       backgroundColor: '#eaeaea',
-                       padding: '0 0.5rem',
-                     }}
-                   >
-                     <img src={JOR_flag} alt="Jordanian flag" style={{ height: '20px', marginRight: '0.25rem' }} />
-                     <span style={{ fontWeight: 600 }}>{formData.countryCode}</span>
-                   </div>
-               
-                   {/* Phone Number */}
-                   <input
-                     type="tel"
-                     name="phoneNumber"
-                     value={formData.phoneNumber}
-                     onChange={changeHandler}
-                     placeholder="e.g., 7xxxxxxx"
-                     style={{
-                       flex: 1,
-                       border: 'none',
-                       outline: 'none',
-                       padding: '0 0.75rem',
-                       fontSize: '1rem',
-                       backgroundColor: 'transparent',
-                     }}
-                   />
-                 </div>
-               </InputRow>
-               
+                  <InputRow icon="phone" label="Phone Number">
+                    <div
+                      className="phone-input-container"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        width: '100%',
+                        border: '1px solid #ccc',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        height: '48px',
+                        backgroundColor: '#f2f2f2',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          flexBasis: '30%',
+                          justifyContent: 'center',
+                          borderRight: '1px solid #ccc',
+                          backgroundColor: '#eaeaea',
+                          padding: '0 0.5rem',
+                          height: '100%',
+                        }}
+                      >
+                        <img src={JOR_flag} alt="Jordanian flag" style={{ height: '20px', marginRight: '0.25rem' }} />
+                        <span style={{ fontWeight: 600 }}>{formData.countryCode}</span>
+                      </div>
+                  
+                      <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={changeHandler}
+                        placeholder="e.g., 7xxxxxxx"
+                        style={{
+                          flex: 1,
+                          border: 'none',
+                          outline: 'none',
+                          padding: '0 0.75rem',
+                          fontSize: '1rem',
+                          backgroundColor: 'transparent',
+                          height: '100%',
+                        }}
+                      />
+                    </div>
+                  </InputRow>
                 ) : (
                   <InputRow icon="mobile-alt" label="Verification Code">
                     <MDBInput
@@ -539,54 +524,48 @@ const LoginSignup = () => {
                 </InputRow>
 
                 <InputRow icon="globe" label="Province">
-        <select
-          name="province"
-          value={formData.province}
-          onChange={changeHandler}
-          aria-label="Select Province"
-          style={{
-            ...commonInputStyle,
-            appearance: "none",
-            width: "100%",
-            color: formData.province ? "#1f0f2e" : "#888",
-          }}
-        >
-          <option value="" disabled>
-            Select Province
-          </option>
-          {Object.keys(AREAS_BY_GOV).map((gov) => (
-            <option key={gov} value={gov}>
-              {gov}
-            </option>
-          ))}
-        </select>
-      </InputRow>
+                  <select
+                    name="province"
+                    value={formData.province}
+                    onChange={changeHandler}
+                    aria-label="Select Province"
+                    style={{
+                      ...commonInputStyle,
+                      appearance: "none",
+                      color: formData.province ? "#1f0f2e" : "#888",
+                    }}
+                  >
+                    <option value="">Select Province</option>
+                    {Object.keys(AREAS_BY_GOV).map((gov) => (
+                      <option key={gov} value={gov}>
+                        {gov}
+                      </option>
+                    ))}
+                  </select>
+                </InputRow>
 
-      {/* Area Select */}
-      <InputRow icon="city" label="Area">
-        <select
-          name="area"
-          value={formData.area}
-          onChange={changeHandler}
-          disabled={!formData.province} // Disabled until province selected
-          aria-label="Select Area"
-          style={{
-            ...commonInputStyle,
-            appearance: "none",
-            width: "100%",
-            color: formData.area ? "#1f0f2e" : "#888",
-          }}
-        >
-          <option value="" disabled>
-            Select Area
-          </option>
-          {(AREAS_BY_GOV[formData.province] || []).map((area) => (
-            <option key={area} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
-      </InputRow>
+                <InputRow icon="city" label="Area">
+                  <select
+                    name="area"
+                    value={formData.area}
+                    onChange={changeHandler}
+                    disabled={!formData.province}
+                    aria-label="Select Area"
+                    style={{
+                      ...commonInputStyle,
+                      appearance: "none",
+                      color: formData.area ? "#1f0f2e" : "#888",
+                    }}
+                  >
+                    <option value="">Select Area</option>
+                    {(AREAS_BY_GOV[formData.province] || []).map((area) => (
+                      <option key={area} value={area}>
+                        {area}
+                      </option>
+                    ))}
+                  </select>
+                </InputRow>
+                
                 <InputRow icon="road" label="Street Name">
                   <MDBInput
                     id="signupFormStreet"
@@ -620,7 +599,6 @@ const LoginSignup = () => {
                     <button
                       onClick={sendVerificationCode}
                       disabled={isCodeSending}
-                      className="action-button" // Added a class for potential CSS styling
                       style={{
                         flex: '1 1 100%',
                         padding: '0.9rem',
@@ -648,7 +626,6 @@ const LoginSignup = () => {
                     <button
                       onClick={verifyCodeAndSignup}
                       disabled={isSigningUp}
-                      className="action-button" // Added a class for potential CSS styling
                       style={{
                         flex: '1 1 100%',
                         padding: '0.9rem',
@@ -719,7 +696,6 @@ const LoginSignup = () => {
 
                 <button
                   onClick={login}
-                  className="action-button" // Added a class for potential CSS styling
                   style={{
                     marginTop: '0.5rem',
                     padding: '0.9rem',
@@ -739,6 +715,27 @@ const LoginSignup = () => {
                   Login
                 </button>
               </>
+            )}
+
+            {state === 'Sign Up' && !showCodeInput && (
+              <button
+                onClick={handleEmailPasswordSignup}
+                type="button"
+                style={{
+                  flex: '1 1 100%',
+                  padding: '0.9rem',
+                  borderRadius: '14px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  background: `linear-gradient(135deg, ${purple2}, ${accent})`,
+                  color: '#1f0f2e',
+                  boxShadow: '0 15px 40px -10px rgba(207,163,225,0.5)',
+                  marginTop: '0.5rem'
+                }}
+              >
+                Sign Up with Email & Password
+              </button>
             )}
 
             <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -770,14 +767,28 @@ const LoginSignup = () => {
                 {state === 'Sign Up' ? (
                   <>
                     Already have an account?{' '}
-                    <span onClick={() => { setState('Login'); setErrorMessage(''); setShowCodeInput(false); }} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
+                    <span 
+                      onClick={() => { 
+                        setState('Login'); 
+                        setErrorMessage(''); 
+                        setShowCodeInput(false); 
+                      }} 
+                      style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}
+                    >
                       Login here
                     </span>
                   </>
                 ) : (
                   <>
                     Create an account?{' '}
-                    <span onClick={() => { setState('Sign Up'); setErrorMessage(''); setShowCodeInput(false); }} style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}>
+                    <span 
+                      onClick={() => { 
+                        setState('Sign Up'); 
+                        setErrorMessage(''); 
+                        setShowCodeInput(false); 
+                      }} 
+                      style={{ cursor: 'pointer', color: accent, fontWeight: 600 }}
+                    >
                       Click here
                     </span>
                   </>
