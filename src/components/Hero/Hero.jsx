@@ -1,6 +1,6 @@
 import React from 'react'
 import './Hero.css'
-import { CustomButton } from "../../index";
+
 import heroImage from '../assets/Front.png'
 
 export const Hero = () => {
@@ -10,7 +10,7 @@ export const Hero = () => {
       <div className="hero-content">
         <h1>بأناقتك ....و بأسلوبك</h1>
         <p>تعرفي على تشكيلة من العبايات الأنيقة</p>
-        <CustomButton className='shop-btn' variant="num1">تسوقي الآن</CustomButton>
+        <button className='shop-btn'>تسوقي الآن</button>
       </div>
       <div className="hero-image">
         <img src={heroImage} alt="Stylish Abaya" />

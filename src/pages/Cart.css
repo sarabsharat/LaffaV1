@@ -1,188 +1,226 @@
 :root {
-  --cool-red: #c0392b; /* A cool shade of red */
+    --darker-purple: #22181f;
+      --gold:#9e6930;
+      --hover-gold: #e1cba5; /* lighter gold */
+      --purple: #6C4A79; /* Define the darker purple color */
+  }
+
+.cart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--purple2) 0%, var(--purple1) 100%);
+    padding: 2rem;
+    gap:2rem;
 }
 
-.cart-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 20px auto;
-    border-radius: 8px;
+.cart-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
 }
 
-.cart-container h1 {
-    text-align: center;
-    color: var(--gold); /* Using gold for the heading */
-    margin-bottom: 20px;
-}
-
-.cart-items {
-    margin-bottom: 20px;
+/* LEFT SIDE */
+.cart-items-section {
+    all: unset;
+    color: #fff;
+  border-radius: 30px;
+    max-width: 900px;
+    flex: 1;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: rgba(108, 74, 121, 0.4) 0px 30px 60px -10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 25px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* subtle contrast */
+  margin-bottom: 20px;
+  font-size: 1.1rem; /* larger text */
+  
 }
 
 .cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding: 15px 0;
-    position: relative; /* Needed for absolute positioning of delete button */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
 }
 
 .cart-item-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    margin-right: 20px;
-    border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .cart-item-details {
-    flex-grow: 1;
+  flex: 1;
 }
 
 .cart-item-details h3 {
-    margin: 0 0 5px 0;
-    font-size: 18px;
+  margin: 0;
+  font-size: 1rem;
 }
 
 .cart-item-details p {
-    margin: 0 0 10px 0;
-    color: #555;
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #bbb;
 }
 
 .cart-item-quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .cart-item-quantity-control button {
-    background-color: var(--gold);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 16px;
+  background: rgba(108, 74, 121, 0.4) 0px 30px 60px -10px;
+  border: none;
+  color: #fff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .cart-item-quantity-control button:hover {
-    background-color: var(--hover-gold);
+  background: var(--darker-purple);
 }
 
 .cart-item-delete {
-    position: absolute; /* Position the delete button absolutely */
-    right: 0; /* Align to the right */
-    top: 0; /* Align to the top */
-    bottom: 0; /* Make it span the full height */
-    background-color: var(--cool-red); /* Using the cool shade of red */
-    color: white;
-    border: none;
-    width: 40px; /* Adjust width as needed */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 20px; /* Adjust icon size */
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .cart-item-delete:hover {
-    background-color: #a93226; /* A slightly darker shade for hover */
+  color: #ef4444;
 }
 
-.cart-summary {
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-    text-align: right;
+/* RIGHT SIDE */
+.cart-summary-section {
+ border-radius: 30px;
+    max-width: 900px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: rgba(108, 74, 121, 0.4) 0px 30px 60px -10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 25px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* subtle contrast */
+  margin-bottom: 20px;
+  font-size: 1.1rem; /* larger text */
 }
 
-.cart-summary h2 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
+.coupon-box, .summary-box {
+ background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: #fff;
 }
 
-.cart-summary p {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
+.coupon-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  width: 200px;
 }
 
-/* Responsive Styles */
-@media(max-width: 768px) {
-    .cart-container {
-        padding: 15px;
-        margin: 15px;
-    }
-
-    .cart-item {
-        flex-direction: column; /* Stack items on smaller screens */
-        align-items: flex-start;
-        padding-right: 50px; /* Add padding to the right to make space for the delete button */
-    }
-
-    .cart-item-image {
-        width: 60px;
-        height: 60px;
-        margin-right: 0;
-        margin-bottom: 10px; /* Add space below image */
-    }
-
-    .cart-item-details {
-        width: 100%; /* Full width details on smaller screens */
-    }
-
-    .cart-item-quantity-control {
-        margin-bottom: 10px;
-    }
-
-    .cart-item-delete {
-        width: 30px; /* Adjust width for smaller screens */
-        font-size: 16px; /* Adjust icon size for smaller screens */
-    }
-
-    .cart-summary {
-        text-align: center; /* Center summary on smaller screens */
-    }
+.coupon-input input {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px 0 0 6px;
+  outline: none;
 }
 
-@media(max-width: 480px) {
-    .cart-container {
-        padding: 10px;
-        margin: 10px;
-    }
+.coupon-input button {
+  background: var(--gold);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 6px 6px 0;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
 
-    .cart-container h1 {
-        font-size: 24px;
-    }
+.coupon-input button:hover {
+  background: var(--hover-gold);
+}
 
-    .cart-item-image {
-        width: 50px;
-        height: 50px;
-    }
+.summary-box h3 {
+  margin-bottom: 1rem;
+}
 
-    .cart-item-details h3 {
-        font-size: 16px;
-    }
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
 
-    .cart-item-details p {
-        font-size: 14px;
-    }
+.summary-row.free {
+  color: var(--gold);
+}
 
-    .cart-item-quantity-control button {
-        padding: 3px 8px;
-        font-size: 14px;
-    }
+.summary-row.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
 
-    .cart-item-delete {
-        width: 25px; /* Adjust width for smaller screens */
-        font-size: 14px; /* Adjust icon size for smaller screens */
-    }
+.checkout-btn {
+  width: 100%;
+  background: var(--gold);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
 
-    .cart-summary h2 {
-        font-size: 18px;
-    }
+.checkout-btn:hover {
+  background: var(--hover-gold);
+}
+.coupon-section button.apply-btn {
+    all: unset; /* clears inherited button styles */
+  background-color: #a05a2c!important; /* matches your theme */
+  color: white!important;
+  border: none!important;
+  padding: 10px 18px!important;
+  border-radius: 6px!important;
+  font-weight: bold!important;
+  cursor: pointer!important;
+  transition: all 0.2s ease-in-out!important;
+}
 
-    .cart-summary p {
-        font-size: 16px;
-    }
+.coupon-section button.apply-btn:hover {
+  background-color: #8c4e25!important; /* darker shade on hover */
+  transform: translateY(-2px)!important; /* subtle lift effect */
+}
+
+.coupon-section button.apply-btn:active {
+  transform: scale(0.95)!important; 
 }

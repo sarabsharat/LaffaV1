@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase.js';
-import { MDBContainer, MDBCard, MDBInput, MDBIcon } from 'mdb-react-ui-kit';
+import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
 import './Profile.css';
 
 const Profile = () => {
@@ -17,7 +17,6 @@ const Profile = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    // Firebase Auth & Firestore integration
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -44,11 +43,9 @@ const Profile = () => {
         return () => unsubscribe();
     }, []);
 
-    // Define color variables for consistency
     const purple1 = '#432e3f';
     const purple2 = '#221820';
     const accent = '#CFA3E1';
-    const white = '#fff';
 
     const commonInputStyle = {
         background: 'rgba(255,255,255,0.85)',
@@ -60,12 +57,10 @@ const Profile = () => {
     };
 
     const handleLogout = () => {
-        console.log('Logging out...');
         navigate('/LoginSignup');
     };
 
     const handleViewOrders = () => {
-        console.log('Viewing orders...');
         navigate('/orders');
     };
 
@@ -106,7 +101,7 @@ const Profile = () => {
 
         const user = auth.currentUser;
         if (user) {
-            await user.updateEmail(newEmail); // update in Auth
+            await user.updateEmail(newEmail);
             await db.collection("users").doc(user.uid).update({ email: newEmail });
         }
 
@@ -170,7 +165,12 @@ const Profile = () => {
     const InputRow = ({ icon, label, children }) => (
         <div className="input-row-container" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
             <div className="input-row-icon" style={{ minWidth: 40, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <MDBIcon fas icon={icon} size="lg" style={{ color: white }} />
+                {/* Replace MDBIcon with a simple emoji or icon font if you want */}
+                <span style={{ fontSize: '1.5rem', color: '#fff' }}>
+                    {icon === "user" && <FaUser />}
+                    {icon === "envelope" && <FaEnvelope />}
+                    {icon === "phone" && <FaPhone />}
+                </span>
             </div>
             <div className="input-row-content" style={{ flex: 1, marginLeft: '1rem' }}>
                 <label className="input-row-label" style={{ display: 'block', color: '#ccc', fontSize: '0.9rem', marginBottom: '0.2rem' }}>{label}</label>
@@ -180,8 +180,8 @@ const Profile = () => {
     );
 
     return (
-        <MDBContainer fluid className="profile-wrapper" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <MDBCard
+        <div className="profile-wrapper" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div
                 className="profile-container"
                 style={{
                     borderRadius: '30px',
@@ -240,7 +240,7 @@ const Profile = () => {
                     {isEditingName ? (
                         <form onSubmit={handleChangeName} style={{ marginTop: '1rem' }}>
                             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                <MDBInput
+                                <input
                                     type="text"
                                     placeholder="Enter new name"
                                     value={newName}
@@ -292,7 +292,7 @@ const Profile = () => {
                     {isEditingEmail ? (
                         <form onSubmit={handleSaveEmail} style={{ marginTop: '1rem' }}>
                             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                <MDBInput
+                                <input
                                     type="email"
                                     placeholder="example@domain.com"
                                     value={newEmail}
@@ -343,7 +343,7 @@ const Profile = () => {
                     {isEditingPhone ? (
                         <form onSubmit={handleSavePhone} style={{ marginTop: '1rem' }}>
                             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                <MDBInput
+                                <input
                                     type="tel"
                                     placeholder="79XXXXXXX (10 digits)"
                                     value={newPhone}
@@ -426,8 +426,8 @@ const Profile = () => {
                         minWidth: '150px'
                     }}>Logout</button>
                 </div>
-            </MDBCard>
-        </MDBContainer>
+            </div>
+        </div>
     );
 };
 

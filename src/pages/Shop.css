@@ -6,9 +6,9 @@
   }
   .shop-container {
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--purple2) 0%, var(--purple1) 100%);
+  }
 .shop-container h1 {
     color: var(--gold);
 }
@@ -88,7 +88,7 @@
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(108, 74, 121, 0.4) 0px 30px 60px -10px;
     transition: transform 0.3s ease;
 }
 

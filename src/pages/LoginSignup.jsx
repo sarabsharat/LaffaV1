@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  MDBContainer,
-  MDBCard,
-  MDBInput,
-  MDBIcon,
-  MDBCheckbox,
-} from 'mdb-react-ui-kit';
 import firebase, { auth, db } from '../firebase';
 import googleLogo from '../components/assets/google-logo.png';
 import JOR_flag from '../components/assets/JOR_flag.png';
 import './LoginSignup.css';
+import { FaUser, FaEnvelope, FaPhone, FaMobileAlt, FaLock, FaKey, FaGlobe, FaCity, FaRoad } from "react-icons/fa";
 import Image from "../components/assets/Front.png";
+
 
 const AREAS_BY_GOV = {
   "العاصمة (Amman)": [
@@ -126,7 +121,7 @@ const LoginSignup = () => {
         setErrorMessage('Failed to initialize reCAPTCHA. Please refresh the page.');
       }
     }
-  }, [state]);
+  }, [state, recaptchaVerifier]);
 
   // Cleanup reCAPTCHA when component unmounts
   useEffect(() => {
@@ -307,13 +302,28 @@ const LoginSignup = () => {
   const accent = '#CFA3E1'; 
   const white = '#fff';
 
+const iconEmoji = (icon) => {
+  if (icon === "user") return <FaUser />;
+  if (icon === "envelope") return <FaEnvelope />;
+  if (icon === "phone") return <FaPhone />;
+  if (icon === "mobile-alt") return <FaMobileAlt />;
+  if (icon === "lock") return <FaLock />;
+  if (icon === "key") return <FaKey />;
+  if (icon === "globe") return <FaGlobe />;
+  if (icon === "city") return <FaCity />;
+  if (icon === "road") return <FaRoad />;
+  return null;
+};
+
+
   // InputRow component
+
   const InputRow = ({ icon, label, children }) => (
-    <div className="input-row-container">
-      <div className="input-row-icon">
-        <MDBIcon fas icon={icon} size="lg" style={{ color: white, minWidth: 32 }} />
+    <div className="input-row-container" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+      <div className="input-row-icon" style={{ minWidth: 32, textAlign: 'center', fontSize: '1.5rem', color: white }}>
+        {iconEmoji(icon)}
       </div>
-      <div className="input-row-content">
+      <div className="input-row-content" style={{ flex: 1, marginLeft: '1rem' }}>
         <label className="input-row-label" style={{ color: white, fontWeight: 500, marginBottom: '0.25rem', display: 'block' }}>
           {label}
         </label>
@@ -322,9 +332,9 @@ const LoginSignup = () => {
     </div>
   );
 
-  return (
-    <MDBContainer fluid className="loginsignup" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh' }}>
-      <MDBCard
+return (
+    <div className="loginsignup" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh' }}>
+      <div
         className="text-black m-0 mx-auto"
         style={{
           borderRadius: '30px',
@@ -334,6 +344,7 @@ const LoginSignup = () => {
           background: 'rgba(255,255,255,0.05)',
           boxShadow: '0 30px 60px -10px rgba(108,74,121,0.4)',
           border: '1px solid rgba(255,255,255,0.08)',
+          margin: '0 auto'
         }}
       >
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -381,8 +392,7 @@ const LoginSignup = () => {
             {state === 'Sign Up' ? (
               <>
                 <InputRow icon="user" label="Your Name">
-                  <MDBInput
-                    id="signupForm1"
+                  <input
                     type="text"
                     name="username"
                     value={formData.username}
@@ -393,8 +403,7 @@ const LoginSignup = () => {
                 </InputRow>
 
                 <InputRow icon="envelope" label="Your Email">
-                  <MDBInput
-                    id="signupForm2"
+                  <input
                     type="email"
                     name="email"
                     value={formData.email}
@@ -456,8 +465,7 @@ const LoginSignup = () => {
                   </InputRow>
                 ) : (
                   <InputRow icon="mobile-alt" label="Verification Code">
-                    <MDBInput
-                      id="signupFormVerificationCode"
+                    <input
                       type="text"
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value)}
@@ -469,8 +477,7 @@ const LoginSignup = () => {
 
                 <InputRow icon="lock" label="Password">
                   <div style={{ position: 'relative', width: '100%' }}>
-                    <MDBInput
-                      id="signupForm3"
+                    <input
                       type={passwordVisible ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
@@ -478,10 +485,7 @@ const LoginSignup = () => {
                       placeholder="Enter your password"
                       style={commonInputStyle}
                     />
-                    <MDBIcon
-                      fas
-                      icon={passwordVisible ? 'eye-slash' : 'eye'}
-                      className="password-toggle-icon"
+                    <span
                       onClick={togglePasswordVisibility}
                       style={{
                         position: 'absolute',
@@ -490,15 +494,17 @@ const LoginSignup = () => {
                         transform: 'translateY(-50%)',
                         cursor: 'pointer',
                         color: purple1,
+                        fontSize: '1.2rem'
                       }}
-                    />
+                    >
+                      {passwordVisible ? '🙈' : '👁️'}
+                    </span>
                   </div>
                 </InputRow>
 
                 <InputRow icon="key" label="Repeat Password">
                   <div style={{ position: 'relative', width: '100%' }}>
-                    <MDBInput
-                      id="signupForm4"
+                    <input
                       type={repeatPasswordVisible ? 'text' : 'password'}
                       name="repeatPassword"
                       value={formData.repeatPassword}
@@ -506,10 +512,7 @@ const LoginSignup = () => {
                       placeholder="Repeat your password"
                       style={commonInputStyle}
                     />
-                    <MDBIcon
-                      fas
-                      icon={repeatPasswordVisible ? 'eye-slash' : 'eye'}
-                      className="password-toggle-icon"
+                    <span
                       onClick={toggleRepeatPasswordVisibility}
                       style={{
                         position: 'absolute',
@@ -518,8 +521,11 @@ const LoginSignup = () => {
                         transform: 'translateY(-50%)',
                         cursor: 'pointer',
                         color: purple1,
+                        fontSize: '1.2rem'
                       }}
-                    />
+                    >
+                      {repeatPasswordVisible ? '🙈' : '👁️'}
+                    </span>
                   </div>
                 </InputRow>
 
@@ -567,8 +573,7 @@ const LoginSignup = () => {
                 </InputRow>
                 
                 <InputRow icon="road" label="Street Name">
-                  <MDBInput
-                    id="signupFormStreet"
+                  <input
                     type="text"
                     name="street"
                     value={formData.street}
@@ -578,20 +583,20 @@ const LoginSignup = () => {
                   />
                 </InputRow>
 
-                <div style={{ marginTop: '0.5rem' }}>
-                  <MDBCheckbox
+                <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="checkbox"
                     name="agreeTerms"
                     id="signupFlexCheckDefault"
-                    label={
-                      <span style={{ color: '#ddd', fontSize: '0.85rem' }}>
-                        By continuing, I agree to the{' '}
-                        <span style={{ color: accent, textDecoration: 'underline' }}>terms of use</span> &{' '}
-                        <span style={{ color: accent, textDecoration: 'underline' }}>privacy policy</span>.
-                      </span>
-                    }
                     checked={formData.agreeTerms}
                     onChange={changeHandler}
+                    style={{ marginRight: '0.5rem' }}
                   />
+                  <label htmlFor="signupFlexCheckDefault" style={{ color: '#ddd', fontSize: '0.85rem' }}>
+                    By continuing, I agree to the{' '}
+                    <span style={{ color: accent, textDecoration: 'underline' }}>terms of use</span> &{' '}
+                    <span style={{ color: accent, textDecoration: 'underline' }}>privacy policy</span>.
+                  </label>
                 </div>
 
                 <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
@@ -616,7 +621,7 @@ const LoginSignup = () => {
                     >
                       {isCodeSending ? (
                         <>
-                          Sending Code... <MDBIcon fas icon="spinner" spin />
+                          Sending Code... <span role="img" aria-label="spinner">⏳</span>
                         </>
                       ) : (
                         'Send Verification Code'
@@ -643,7 +648,7 @@ const LoginSignup = () => {
                     >
                       {isSigningUp ? (
                         <>
-                          Signing Up... <MDBIcon fas icon="spinner" spin />
+                          Signing Up... <span role="img" aria-label="spinner">⏳</span>
                         </>
                       ) : (
                         'Verify Code and Register'
@@ -655,8 +660,7 @@ const LoginSignup = () => {
             ) : (
               <>
                 <InputRow icon="envelope" label="Email">
-                  <MDBInput
-                    id="loginForm1"
+                  <input
                     type="email"
                     name="email"
                     value={formData.email}
@@ -668,8 +672,7 @@ const LoginSignup = () => {
 
                 <InputRow icon="lock" label="Password">
                   <div style={{ position: 'relative', width: '100%' }}>
-                    <MDBInput
-                      id="loginForm2"
+                    <input
                       type={passwordVisible ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
@@ -677,10 +680,7 @@ const LoginSignup = () => {
                       placeholder="Enter your password"
                       style={commonInputStyle}
                     />
-                    <MDBIcon
-                      fas
-                      icon={passwordVisible ? 'eye-slash' : 'eye'}
-                      className="password-toggle-icon"
+                    <span
                       onClick={togglePasswordVisibility}
                       style={{
                         position: 'absolute',
@@ -689,8 +689,11 @@ const LoginSignup = () => {
                         transform: 'translateY(-50%)',
                         cursor: 'pointer',
                         color: purple1,
+                        fontSize: '1.2rem'
                       }}
-                    />
+                    >
+                      {passwordVisible ? '🙈' : '👁️'}
+                    </span>
                   </div>
                 </InputRow>
 
@@ -832,8 +835,8 @@ const LoginSignup = () => {
             />
           </div>
         </div>
-      </MDBCard>
-    </MDBContainer>
+      </div>
+    </div>
   );
 };
 

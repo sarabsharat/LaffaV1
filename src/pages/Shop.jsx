@@ -9,8 +9,8 @@ const Shop = () => {
   const [layout, setLayout] = useState('grid'); // Add state for layout mode
 
   useEffect(() => {
-    // In a real application, you would fetch product data from an API
-    // For this example, we'll use dummy data
+    // In a real application, i would fetch product data from an API
+    // For this example, ill use dummy data
     const dummyProducts = [
       { id: 1, name: 'Product 1', category: 'electronics', price: 100, image: 'path/to/product1.jpg' },
       { id: 2, name: 'Product 2', category: 'books', price: 20, image: 'path/to/product2.jpg' },
