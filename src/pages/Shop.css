@@ -85,44 +85,108 @@
 }
 
 .product-item {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: rgba(108, 74, 121, 0.4) 0px 30px 60px -10px;
-    transition: transform 0.3s ease;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(108, 74, 121, 0.4) 0px 20px 40px -10px;
+  transition: transform 0.3s ease;
+  position: relative;
+  text-align: center;
 }
 
 .product-item:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
-.product-item img {
-    width: 100%;
-    height: 200px; /* Adjust as needed */
-    object-fit: cover;
+.product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.sale-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--gold);
+  color: white;
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
 .product-details {
-    padding: 15px;
+  padding: 15px;
 }
 
-.product-details h3 {
-    font-size: 1.2em;
-    margin-bottom: 5px;
-    color: #333;
+.product-details {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.product-details p {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 10px;
+.price-section {
+  margin-bottom: 10px;
 }
 
-.product-details .price {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #007bff; /* Example price color */
+.current-price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--gold);
+  margin-right: 8px;
 }
+
+.old-price {
+  font-size: 1em;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.categories {
+  margin: 10px 0 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center; /* or flex-start depending on design */
+}
+
+.category-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--purple);
+  background: rgba(108, 74, 121, 0.06); /* subtle background */
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(108, 74, 121, 0.08);
+}
+
+.add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.18s ease, transform 0.12s ease;
+  width: 100%; /* full width like you wanted */
+}
+.add-to-cart:hover {
+  background: var(--hover-gold);
+  transform: translateY(-2px);
+}
+.add-to-cart .cart-icon {
+  font-size: 1.05rem;
+}
+
+
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {

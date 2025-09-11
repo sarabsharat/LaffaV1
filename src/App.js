@@ -40,10 +40,7 @@ function App() {
     },
   ]);
 
-  // Calculate total quantity of items in the cart
-  const getTotalCartQuantity = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
+const [cartCount, setCartCount] = useState(0);
 
   // Debug effect to track cart changes
   React.useEffect(() => {
@@ -57,7 +54,7 @@ function App() {
           <BrowserRouter>
             {/* Wrap Navbar with ErrorBoundary for isolation */}
             <ErrorBoundary>
-              <Navbar totalQuantity={getTotalCartQuantity()} />
+              <Navbar totalQuantity={cartCount} />
             </ErrorBoundary>
             
             <Routes>
@@ -87,7 +84,7 @@ function App() {
               
               <Route path="/Shop" element={
                 <ErrorBoundary>
-                  <Shop />
+                  <Shop updateCartCount={setCartCount}  />
                 </ErrorBoundary>
               } />
               
