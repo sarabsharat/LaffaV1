@@ -1,6 +1,9 @@
 :root {
     --gold: #9e6930;
     --purple: #6C4A79;
+    --purple-dark: #221820;
+    --success-color: #9e6930;
+    --error-color: #dc3545;
 }
 
 .contact-container {
@@ -16,11 +19,11 @@
 
 .contact-banner {
     position: absolute;
-    top: 15%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80vw;
-    background:rgba(108, 74, 121, 0.25);
+    background: rgba(108, 74, 121, 0.25);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 10px;
@@ -30,5 +33,159 @@
     padding: 20px;
     text-align: center;
     font-size: 2.5rem;
-    
+}
+
+.contact-form {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    max-width: 600px;
+    background: rgba(108, 74, 121, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--gold);
+    font-size: 1rem;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: rgba(255, 223, 186, 0.7);
+}
+
+/* Animated Button Styles */
+.submit-btn {
+    width: 100%;
+    height: 60px;
+    border: none;
+    outline: none;
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: #fff;
+    font-size: 22px;
+    border-radius: 40px;
+    box-shadow: 0 6px 20px -5px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-text {
+    transition: margin-right 1s ease;
+}
+
+.check-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 40px;
+    box-shadow: 0 0 12px -2px rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0;
+    right: -40px;
+    opacity: 0;
+    transition: all 1s ease;
+}
+
+.check-box svg {
+    width: 30px;
+    margin: 15px;
+}
+
+.check-box svg path {
+    stroke-width: 3;
+    stroke: #fff;
+    stroke-dasharray: 34;
+    stroke-dashoffset: 34;
+    stroke-linecap: round;
+}
+
+.submit-btn.active {
+    background: var(--success-color);
+    transition: background-color 1s ease;
+}
+
+.submit-btn.active .check-box {
+    right: 0;
+    opacity: 1;
+}
+
+.submit-btn.active .btn-text {
+    margin-right: 85px;
+}
+
+.submit-btn.active svg path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s ease;
+    transition-delay: 1s;
+}
+
+.form-result {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.form-result.sending {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    animation: pulse 1.5s infinite;
+}
+
+.form-result.success {
+    background-color: var(--success-color);
+    opacity: 1;
+}
+
+.form-result.error {
+    background-color: var(--error-color);
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) scale(1); }
+}
+
+@media (max-width: 768px) {
+    .contact-banner {
+        top: 15%;
+        font-size: 2rem;
+    }
+
+    .contact-form {
+        top: 55%;
+    }
+
+    .form-result {
+        top: 90%;
+    }
 }
