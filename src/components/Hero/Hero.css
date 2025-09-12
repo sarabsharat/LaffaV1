@@ -1,3 +1,4 @@
+
 .hero-section {
   display: flex;
   justify-content: space-between;
@@ -31,18 +32,20 @@
 }
 
 .shop-btn {
-  padding: 12px 28px;
+  all:unset;
+  padding: 22px 30px;
   font-size: 2rem !important;
-  background-color: var(--gold) !important;
+  background: linear-gradient(to right, var(--hover-gold), var(--gold));
   color: #22181f;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.5s ease, transform 0.3s ease-out;
 }
 
 .shop-btn:hover {
-  background-color: var(--hover-gold);
+  background: linear-gradient(to right, var(--gold), var(--hover-gold));
+  transform: scale(1.05);
 }
 
 .hero-image {
@@ -61,10 +64,10 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    flex-direction: column; 
+    flex-direction: column;
     text-align: center;
-    gap: 15px; 
-    padding: 40px 15px; 
+    gap: 15px;
+    padding: 40px 15px;
   }
 
   .hero-content,

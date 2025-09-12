@@ -9,40 +9,17 @@ import { LanguageContext } from '../../LanguageContext';
 import JORflag from "./../assets/JOR_flag.png";
 import UKflag from "./../assets/UK_flag.png";
 
-const Navbar = () => { // Remove the totalQuantity prop parameter
+const Navbar = ({ totalQuantity }) => {
     const [menu, setMenu] = useState("Home");
     const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
     const { language, changeLanguage } = useContext(LanguageContext);
     const t = translations[language];
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [cart, setCart] = useState([]); // Add cart state to navbar
 
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
-    // Calculate totalQuantity from cart
-    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-
     const userIsAuthenticated = true;
-
-    // Add this to listen for storage changes
-    useEffect(() => {
-        const handleStorageChange = () => {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                setCart(JSON.parse(savedCart));
-            }
-        };
-        
-        // Get initial cart from localStorage
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            setCart(JSON.parse(savedCart));
-        }
-        
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const handleLanguageChange = (newLanguage) => {
         changeLanguage(newLanguage);
@@ -134,11 +111,9 @@ const Navbar = () => { // Remove the totalQuantity prop parameter
                     <Link style={{ textDecoration:"none"}} to="/Cart"><button className='cart-btn'>
                         <FaCartShopping />
                     </button></Link>
-                   {cart.length > 0 && (
-            <span className="cart-count">
-              {cart.reduce((sum, it) => sum + (it.quantity || 0), 0)}
-            </span>
-          )}
+                   {totalQuantity > 0 && (
+                        <span className="cart-count">{totalQuantity}</span>
+                    )}
                 </div>
             </div>
         </div>  

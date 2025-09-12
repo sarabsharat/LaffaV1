@@ -1,0 +1,34 @@
+:root {
+    --gold: #9e6930;
+    --purple: #6C4A79;
+}
+
+.contact-container {
+    position: relative;
+    width: 100%;
+}
+
+.contact-container svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.contact-banner {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    background:rgba(108, 74, 121, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    color: var(--gold);
+    padding: 20px;
+    text-align: center;
+    font-size: 2.5rem;
+    
+}

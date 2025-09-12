@@ -1,141 +1,291 @@
-.input-row-container {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically align items in the center */
-    margin-bottom: 1rem; /* Add some space below each input row */
-    width: 100%; /* Ensure the container takes full width */
+:root {
+  --purple-dark: #221820;
+  --purple-mid: #432e3f;
+  --purple-light: #6c4a79;
+  --accent-color: #CFA3E1;
+  --text-light: #e0e0e0;
+  --text-dark: #1f0f2e;
+  --white: #fff;
+  --error-color: #ff6b6b;
+  --shadow-color: rgba(108, 74, 121, 0.4);
+  --border-color: rgba(255, 255, 255, 0.08);
 }
-
-.input-row-icon {
-    /* Existing styles for the icon container */
-    margin-right: 15px; /* Add space between the icon and the label/input */
-    /* Ensure consistent size for icons if needed */
-    min-width: 32px; /* Keep consistent icon width */
-    text-align: center; /* Center the icon if its container is wider */
-}
-
-.input-row-content {
-    flex-grow: 1; /* Allow the content area (label + input) to take up remaining space */
-    /* Adjust alignment within content if necessary */
-}
-
-.input-row-label {
-    /* Existing styles for the label */
-    margin-bottom: 0.25rem; /* Keep the small margin below the label */
-    display: block; /* Ensure the label is a block element */
-}
-
-/* Style for the container of phone number and country code inputs */
-.phone-input-container {
-    display: flex;
-    align-items: center; /* Align items vertically */
-    gap: 0.5rem; /* Space between flag, country code, and phone number */
-    width: 100%;
-}
-
-.phone-input-container img {
-    height: 20px; /* Adjust flag size as needed */
-}
-
-/* Style for the MDBInput within InputRow */
-.input-row-content .form-control {
-    width: 100%;
-    align-items: center;
-    background: rgba(255,255,255,0.85); 
-    border-radius: 12px; 
-    border: 1px solid #221820;
-    padding: 0.75rem 1rem; 
-    color: #1f0f2e; 
-}
-
-.phone-input-container .country-code-input.form-control {
-  width: 100%; /* Explicitly set width */
-  flex-shrink: 0; /* Prevent shrinking */
-  flex-grow: 0; /* Prevent growing */
-  padding: 0.375rem 0.5rem; /* Adjusted padding for smaller size */
-  text-align: center; /* Center the text */
-}
-
-.phone-input-container .phone-number-input.form-control {
-  flex: 1; /* Phone number input: allowed to grow and shrink, takes up remaining space */
-}
-
-
-/* Optional: Style for the password toggle icon */
-.password-toggle-icon {
-  cursor: pointer;
-  color: #432e3f;
-}
-
 
 .loginsignup {
-    padding: 2rem 1rem;
-    background: linear-gradient(135deg, #221820 0%, #432e3f 100%);
-    min-height: 100vh;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-mid) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginsignup__container {
+  border-radius: 30px;
+  max-width: 1100px;
+  width: 100%;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 30px 60px -10px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.loginsignup__content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Form Section */
+.loginsignup__form-section {
+  flex: 1 1 500px;
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form__title h1 {
+  color: var(--text-light);
+  font-size: 1.75rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding-bottom: 0.5rem;
+}
+
+.form__title-underline {
+  height: 4px;
+  width: 120px;
+  background: linear-gradient(90deg, var(--purple-mid), var(--purple-dark));
+  border-radius: 2px;
+  margin-top: 6px;
+}
+
+.form__error-message {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Input Groups */
+.form__input-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form__input-icon {
+  font-size: 1.5rem;
+  color: var(--white);
+  min-width: 32px;
+  text-align: center;
+}
+
+.form__input-content {
+  flex: 1;
+}
+
+.form__input-label {
+  color: var(--white);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.form__input, .form__select {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  border: 1px solid var(--purple-dark);
+  padding: 0.75rem 1rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form__select {
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%231f0f2e" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.form__input:focus, .form__select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(207, 163, 225, 0.3);
+}
+
+/* Specific Input Containers */
+.form__phone-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form__country-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 12px 0 0 12px;
+  padding: 0 0.75rem;
+  height: 48px;
+}
+.form__country-code img {
+  height: 20px;
+  margin-right: 0.5rem;
+}
+.form__phone-input-container .form__input {
+  border-radius: 0 12px 12px 0;
+  height: 48px;
+}
+
+
+.form__password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form__password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--purple-mid);
+  font-size: 1.2rem;
+}
+
+/* Terms and Links */
+.form__terms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #ddd;
+}
+
+.form__link {
+  color: var(--accent-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.9rem;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--purple-mid), var(--purple-dark));
+  color: var(--white);
+  box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5);
+}
+
+.btn--accent {
+  background: linear-gradient(135deg, var(--purple-dark), var(--accent-color));
+  color: var(--text-dark);
+  box-shadow: 0 15px 40px -10px rgba(207, 163, 225, 0.5);
+}
+
+.btn--google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--white);
+  font-weight: 500;
+  font-size: 0.9rem;
+  backdrop-filter: blur(6px);
+}
+
+.btn--google img {
+  height: 18px;
+}
+
+.form__action-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.form__social-logins {
+  margin-top: 1rem;
+}
+
+.form__switch-state {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+
+/* Image Section */
+.loginsignup__image-section {
+  flex: 1 1 400px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(34, 24, 32, 0.2), rgba(67, 46, 63, 0.6));
+  min-height: 300px;
+}
+
+.loginsignup__image {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: drop-shadow(0 20px 50px var(--shadow-color));
+}
+
+.loginsignup__image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  mix-blend-mode: overlay;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .loginsignup__form-section {
+    padding: 2rem;
   }
-  
-  .form-container {
-    display: flex;
-    flex-wrap: wrap;
+  .loginsignup__image-section {
+    border-radius: 0 0 30px 30px;
   }
-  
-  .form-content {
-    flex: 1 1 500px;
-    padding: 2rem 2rem 2rem 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  .loginsignup__image {
+    border-radius: 0;
   }
-  
-  .form-title {
-    color: #e0e0e0;
-    padding: 0.5rem 0;
-    font-size: 1.75rem;
-    margin: 0;
-    letter-spacing: 0.5px;
+}
+
+@media (max-width: 576px) {
+  .loginsignup {
+    padding: 1rem 0;
   }
-  
-  .error-message {
-    color: #ff6b6b;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    text-align: center;
+  .loginsignup__container {
+    border-radius: 0;
   }
-  
-  .input-row-container {
-    display: flex;
-    align-items: center;
+  .loginsignup__form-section {
+    padding: 1.5rem;
   }
-  
-  .input-row-icon {
-    min-width: 32px;
-  }
-  
-  .input-row-label {
-    color: #fff;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-    display: block;
-  }
-  
-  .action-buttons {
-    margin-top: 1rem;
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .image-container {
-    flex: 1 1 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(34, 24, 32, 0.2), rgba(67, 46, 63, 0.6));
-  }
-  
-  .image-container img {
-    max-width: 100%;
-    object-fit: cover;
-    border-radius: 0 30px 30px 0;
-    filter: drop-shadow(0 20px 50px rgba(108, 74, 121, 0.4));
-  }
-  
+}

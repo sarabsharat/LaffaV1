@@ -2,21 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import "./Shop.css";
+import product1_image from "../components/assets/Product1.jpg";
+import product2_image from "../components/assets/product2.jpg";
+import product3_image from "../components/assets/Front.png";
 
-const Shop = ({ updateCartCount }) => { // Add this prop
+const Shop = ({ addToCart }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
   const [layout, setLayout] = useState("grid");
-  const [cart, setCart] = useState([]);
-
- useEffect(() => {
-    if (updateCartCount) {
-      const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-      updateCartCount(totalQuantity);
-    }
-  }, [cart, updateCartCount]);
 
   useEffect(() => {
     const dummyProducts = [
@@ -24,43 +19,43 @@ const Shop = ({ updateCartCount }) => { // Add this prop
         id: 1,
         name: "Vintage Headphones",
         category: "electronics",
-        categories: ["Audio", "Accessories"],
+        categories: ["Audio", "Accessories", "Gadgets"],
         price: 100,
-        image: "path/to/product1.jpg",
+        image: product1_image,
         onSale: true,
         oldPrice: 140,
       },
       {
         id: 2,
         name: "Notebook — Ruled",
-        category: "books",
-        categories: ["Stationery", "Books"],
+        category: "stationery",
+        categories: ["Stationery", "Books", "Office"],
         price: 20,
-        image: "path/to/product2.jpg",
+        image: product2_image,
       },
       {
         id: 3,
         name: "Portable Speaker",
         category: "electronics",
-        categories: ["Audio"],
+        categories: ["Audio", "Gadgets", "Outdoor"],
         price: 150,
-        image: "path/to/product3.jpg",
+        image: product3_image,
       },
       {
         id: 4,
         name: "Cozy Sweater",
         category: "clothing",
-        categories: ["Apparel"],
+        categories: ["Apparel", "Fashion", "Winter"],
         price: 50,
-        image: "path/to/product4.jpg",
+        image: product1_image,
       },
       {
         id: 5,
         name: "Art Book",
         category: "books",
-        categories: ["Books", "Art"],
+        categories: ["Books", "Art", "Hobbies"],
         price: 30,
-        image: "path/to/product5.jpg",
+        image: product2_image,
       },
     ];
     setProducts(dummyProducts);
@@ -78,36 +73,13 @@ const Shop = ({ updateCartCount }) => { // Add this prop
   }, [searchTerm, filter, products]);
 
   const handleAddToCart = (product) => {
-    setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.id === product.id);
-       let newCart;
-      if (existing) {
-        newCart = prevCart.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-      );
-    }
-      else {
-      newCart = [...prevCart, { ...product, quantity: 1 }];
-    }
-     localStorage.setItem('cart', JSON.stringify(newCart));
-    return newCart;
-    });
+    addToCart(product);
   };
+
   return (
     <div className="shop-container">
       <div className="shop-header">
         <h1>Shop</h1>
-
-        {/* optional small cart indicator (only visual) */}
-        <div className="cart-icon">
-          <FaShoppingCart size={20} />
-          {/* show total quantity if there are items */}
-          {cart.length > 0 && (
-            <span className="cart-count">
-              {cart.reduce((sum, it) => sum + (it.quantity || 0), 0)}
-            </span>
-          )}
-        </div>
       </div>
 
       {/* Search + Filter */}
@@ -121,10 +93,10 @@ const Shop = ({ updateCartCount }) => { // Add this prop
         />
         <select value={filter} onChange={(e) => setFilter(e.target.value)} className="filter-dropdown">
           <option value="all">All Categories</option>
-          {/* you can generate these dynamically */}
           <option value="electronics">Electronics</option>
           <option value="books">Books</option>
           <option value="clothing">Clothing</option>
+          <option value="stationery">Stationery</option>
         </select>
       </div>
 
@@ -158,7 +130,6 @@ const Shop = ({ updateCartCount }) => { // Add this prop
                 {product.oldPrice && <span className="old-price">${product.oldPrice.toFixed(2)}</span>}
               </div>
 
-              {/* Categories: prefer product.categories (array), fallback to product.category (string) */}
               <div className="categories">
                 {(product.categories && product.categories.length > 0
                   ? product.categories
