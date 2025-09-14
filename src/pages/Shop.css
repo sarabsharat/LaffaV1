@@ -181,6 +181,7 @@ width: 100%; /* full width like you wanted */
 .add-to-cart:hover {
 background: var(--hover-gold);
 transform: translateY(-2px);
+color:var(--darker-purple);
 }
 .add-to-cart .cart-icon {
 font-size: 1.05rem;

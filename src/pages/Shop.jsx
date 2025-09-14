@@ -1,10 +1,8 @@
-// Shop.jsx
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import productsData from "../productData"; // Import from the centralized data file
 import "./Shop.css";
-import product1_image from "../components/assets/Product1.jpg";
-import product2_image from "../components/assets/product2.jpg";
-import product3_image from "../components/assets/Front.png";
 
 const Shop = ({ addToCart }) => {
   const [products, setProducts] = useState([]);
@@ -14,52 +12,9 @@ const Shop = ({ addToCart }) => {
   const [layout, setLayout] = useState("grid");
 
   useEffect(() => {
-    const dummyProducts = [
-      {
-        id: 1,
-        name: "Vintage Headphones",
-        category: "electronics",
-        categories: ["Audio", "Accessories", "Gadgets"],
-        price: 100,
-        image: product1_image,
-        onSale: true,
-        oldPrice: 140,
-      },
-      {
-        id: 2,
-        name: "Notebook — Ruled",
-        category: "stationery",
-        categories: ["Stationery", "Books", "Office"],
-        price: 20,
-        image: product2_image,
-      },
-      {
-        id: 3,
-        name: "Portable Speaker",
-        category: "electronics",
-        categories: ["Audio", "Gadgets", "Outdoor"],
-        price: 150,
-        image: product3_image,
-      },
-      {
-        id: 4,
-        name: "Cozy Sweater",
-        category: "clothing",
-        categories: ["Apparel", "Fashion", "Winter"],
-        price: 50,
-        image: product1_image,
-      },
-      {
-        id: 5,
-        name: "Art Book",
-        category: "books",
-        categories: ["Books", "Art", "Hobbies"],
-        price: 30,
-        image: product2_image,
-      },
-    ];
-    setProducts(dummyProducts);
-    setFilteredProducts(dummyProducts);
+    // Use the imported product data
+    setProducts(productsData);
+    setFilteredProducts(productsData);
   }, []);
 
   useEffect(() => {
@@ -76,13 +31,22 @@ const Shop = ({ addToCart }) => {
     addToCart(product);
   };
 
+  // Determine the image to display for each product
+  const getProductImage = (product) => {
+    if (product.images && product.colors && product.colors.length > 0) {
+        // Default to the first color's image if available
+        const firstColorKey = product.colors[0].imageKey;
+        return product.images[firstColorKey];
+    }
+    return product.image || (product.images && product.images.default);
+  };
+
   return (
     <div className="shop-container">
       <div className="shop-header">
         <h1>Shop</h1>
       </div>
 
-      {/* Search + Filter */}
       <div className="filter-search-container">
         <input
           type="text"
@@ -100,7 +64,6 @@ const Shop = ({ addToCart }) => {
         </select>
       </div>
 
-      {/* Layout toggle */}
       <div className="layout-toggle">
         <button onClick={() => setLayout("grid")} className={layout === "grid" ? "active" : ""}>
           Grid View
@@ -110,44 +73,38 @@ const Shop = ({ addToCart }) => {
         </button>
       </div>
 
-      {/* Products */}
       <div className={`products-list ${layout}-view`}>
         {filteredProducts.map((product) => (
-          <div key={product.id} className="product-item">
-            {product.onSale && <span className="sale-badge">SALE</span>}
+          <Link to={`/product/${product.id}`} key={product.id} className="product-item-link">
+            <div className="product-item">
+              {product.onSale && <span className="sale-badge">SALE</span>}
 
-            <img
-              src={product.image || "https://via.placeholder.com/150"}
-              alt={product.name}
-              className="product-image"
-            />
+              <img
+                src={getProductImage(product)}
+                alt={product.name}
+                className="product-image"
+              />
 
-            <div className="product-details">
-              <h3>{product.name}</h3>
+              <div className="product-details">
+                <h3>{product.name}</h3>
 
-              <div className="price-section">
-                <span className="current-price">${product.price.toFixed(2)}</span>
-                {product.oldPrice && <span className="old-price">${product.oldPrice.toFixed(2)}</span>}
+                <div className="price-section">
+                  <span className="current-price">${product.price.toFixed(2)}</span>
+                  {product.oldPrice && <span className="old-price">${product.oldPrice.toFixed(2)}</span>}
+                </div>
+
+                <div className="categories">
+                  {(product.categories || []).map((cat) => (
+                    <span key={cat} className="category-tag">{cat}</span>
+                  ))}
+                </div>
+
+                <button className="add-to-cart" onClick={(e) => { e.preventDefault(); handleAddToCart(product); }}>
+                  <FaShoppingCart className="cart-icon" /> Add to Cart
+                </button>
               </div>
-
-              <div className="categories">
-                {(product.categories && product.categories.length > 0
-                  ? product.categories
-                  : product.category
-                    ? [product.category]
-                    : []
-                ).map((cat) => (
-                  <span key={cat} className="category-tag">
-                    {cat}
-                  </span>
-                ))}
-              </div>
-
-              <button className="add-to-cart" onClick={() => handleAddToCart(product)}>
-                <FaShoppingCart className="cart-icon" /> Add to Cart
-              </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
