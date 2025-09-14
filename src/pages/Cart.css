@@ -19,6 +19,8 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
 }
 
 /* LEFT SIDE */
@@ -191,23 +193,29 @@
 
 .checkout-btn {
   width: 100%;
-  background: var(--gold);
+  background: linear-gradient(135deg, var(--purple1), var(--purple2));
+  color: linear-gradient(135deg, var(--accent), #9c67b4) !important;
+  box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5); 
   border: none;
   padding: 0.75rem;
   border-radius: 8px;
-  color: #fff;
+  color: var(--darker-purple);
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .checkout-btn:hover {
-  background: var(--hover-gold);
-}
+  transform: translateY(-2px)!important;
+  transform: translateY(-2px)!important;
+  background: linear-gradient(135deg, var(--accent), #9c67b4);
+  color: #1f0f2e !important;}
+
 .coupon-section button.apply-btn {
-    all: unset; /* clears inherited button styles */
-  background-color: #a05a2c!important; /* matches your theme */
-  color: white!important;
+  all: unset; /* clears inherited button styles */
+  background: linear-gradient(135deg, var(--purple1), var(--purple2));
+  color: linear-gradient(135deg, var(--accent), #9c67b4) !important;
+  box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5);
   border: none!important;
   padding: 10px 18px!important;
   border-radius: 6px!important;
@@ -217,10 +225,34 @@
 }
 
 .coupon-section button.apply-btn:hover {
-  background-color: #8c4e25!important; /* darker shade on hover */
-  transform: translateY(-2px)!important; /* subtle lift effect */
+   /* darker shade on hover */
+  transform: translateY(-2px)!important;
+  background: linear-gradient(135deg, var(--accent), #9c67b4);
+  color: #1f0f2e !important;
+  box-shadow: 0 15px 40px -10px rgba(207, 163, 225, 0.5);/* subtle lift effect */  }
+
+.coupon-section, button.apply-btn:active {
+  transform: scale(0.95)!important; 
+}
+.checkout-btn:active {
+  transform: scale(0.95)!important; 
 }
 
-.coupon-section button.apply-btn:active {
-  transform: scale(0.95)!important; 
+@media (max-width: 900px) {
+  .cart-content {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cart-item-details h3 {
+    font-size: 0.9rem;
+  }
+
+  .cart-item-details p {
+    font-size: 0.8rem;
+  }
 }

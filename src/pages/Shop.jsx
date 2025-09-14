@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import productsData from "../productData"; // Import from the centralized data file
+import productsData from "../productData";
 import "./Shop.css";
 
 const Shop = ({ addToCart }) => {
@@ -9,10 +9,9 @@ const Shop = ({ addToCart }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const [layout, setLayout] = useState("grid");
+  const [addedProducts, setAddedProducts] = useState([]);
 
   useEffect(() => {
-    // Use the imported product data
     setProducts(productsData);
     setFilteredProducts(productsData);
   }, []);
@@ -27,14 +26,30 @@ const Shop = ({ addToCart }) => {
     setFilteredProducts(filtered);
   }, [searchTerm, filter, products]);
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
+  const handleAddToCart = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (addedProducts.includes(product.id)) {
+        return;
+    }
+
+    if (product && typeof addToCart === 'function') {
+      addToCart(product);
+    } else {
+      console.error("addToCart is not a function or product is not available.");
+      return;
+    }
+
+    setAddedProducts(prev => [...prev, product.id]);
+
+    setTimeout(() => {
+        setAddedProducts(prev => prev.filter(id => id !== product.id));
+    }, 1500);
   };
 
-  // Determine the image to display for each product
   const getProductImage = (product) => {
     if (product.images && product.colors && product.colors.length > 0) {
-        // Default to the first color's image if available
         const firstColorKey = product.colors[0].imageKey;
         return product.images[firstColorKey];
     }
@@ -44,13 +59,13 @@ const Shop = ({ addToCart }) => {
   return (
     <div className="shop-container">
       <div className="shop-header">
-        <h1>Shop</h1>
+        <h1>Shop Our Collection</h1>
       </div>
 
       <div className="filter-search-container">
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder="Search for your favorite abaya..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
@@ -64,16 +79,7 @@ const Shop = ({ addToCart }) => {
         </select>
       </div>
 
-      <div className="layout-toggle">
-        <button onClick={() => setLayout("grid")} className={layout === "grid" ? "active" : ""}>
-          Grid View
-        </button>
-        <button onClick={() => setLayout("list")} className={layout === "list" ? "active" : ""}>
-          List View
-        </button>
-      </div>
-
-      <div className={`products-list ${layout}-view`}>
+      <div className="products-list">
         {filteredProducts.map((product) => (
           <Link to={`/product/${product.id}`} key={product.id} className="product-item-link">
             <div className="product-item">
@@ -99,8 +105,17 @@ const Shop = ({ addToCart }) => {
                   ))}
                 </div>
 
-                <button className="add-to-cart" onClick={(e) => { e.preventDefault(); handleAddToCart(product); }}>
-                  <FaShoppingCart className="cart-icon" /> Add to Cart
+                <button 
+                  className={`add-to-cart ${addedProducts.includes(product.id) ? 'added' : ''}`}
+                  onClick={(e) => handleAddToCart(e, product)}
+                >
+                  {addedProducts.includes(product.id) ? (
+                    'ADDED!'
+                  ) : (
+                    <>
+                      <FaShoppingCart className="cart-icon" /> Add to Cart
+                    </>
+                  )}
                 </button>
               </div>
             </div>

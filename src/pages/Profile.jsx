@@ -43,19 +43,6 @@ const Profile = () => {
         return () => unsubscribe();
     }, []);
 
-    const purple1 = '#432e3f';
-    const purple2 = '#221820';
-    const accent = '#CFA3E1';
-
-    const commonInputStyle = {
-        background: 'rgba(255,255,255,0.85)',
-        borderRadius: '12px',
-        border: `1px solid #221820`,
-        padding: '0.75rem 1rem',
-        color: '#1f0f2e',
-        fontWeight: 500,
-    };
-
     const handleLogout = () => {
         navigate('/LoginSignup');
     };
@@ -163,71 +150,31 @@ const Profile = () => {
     };
 
     const InputRow = ({ icon, label, children }) => (
-        <div className="input-row-container" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-            <div className="input-row-icon" style={{ minWidth: 40, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {/* Replace MDBIcon with a simple emoji or icon font if you want */}
-                <span style={{ fontSize: '1.5rem', color: '#fff' }}>
+        <div className="input-row-container">
+            <div className="input-row-icon">
+                <span>
                     {icon === "user" && <FaUser />}
                     {icon === "envelope" && <FaEnvelope />}
                     {icon === "phone" && <FaPhone />}
                 </span>
             </div>
-            <div className="input-row-content" style={{ flex: 1, marginLeft: '1rem' }}>
-                <label className="input-row-label" style={{ display: 'block', color: '#ccc', fontSize: '0.9rem', marginBottom: '0.2rem' }}>{label}</label>
+            <div className="input-row-content">
+                <label className="input-row-label">{label}</label>
                 {children}
             </div>
         </div>
     );
 
     return (
-        <div className="profile-wrapper" style={{ padding: '2rem 1rem', background: 'linear-gradient(135deg, #221820 0%, #432e3f 100%)', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div
-                className="profile-container"
-                style={{
-                    borderRadius: '30px',
-                    maxWidth: '900px',
-                    width: '100%',
-                    overflow: 'hidden',
-                    backdropFilter: 'blur(12px)',
-                    background: 'rgba(255,255,255,0.05)',
-                    boxShadow: '0 30px 60px -10px rgba(108,74,121,0.4)',
-                    border: `1px solid rgba(255,255,255,0.08)`,
-                    padding: '3rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '2rem'
-                }}
-            >
-                <div style={{ marginBottom: '0.5rem', textAlign: 'center' }}>
-                    <h1 className="profile-title fw-bold" style={{
-                        color: "#e0e0e0",
-                        padding: '0.5rem 0',
-                        fontSize: '2.5rem',
-                        margin: 0,
-                        letterSpacing: '0.5px',
-                    }}>
-                        Profile
-                    </h1>
-                    <div style={{
-                        height: 4,
-                        width: 120,
-                        background: `linear-gradient(90deg, ${purple1}, ${purple2})`,
-                        borderRadius: 2,
-                        marginTop: 6,
-                        margin: '0 auto'
-                    }} />
+        <div className="profile-wrapper">
+            <div className="profile-container">
+                <div className="profile-title-container">
+                    <h1 className="profile-title fw-bold">Profile</h1>
+                    <div className="profile-title-divider" />
                 </div>
 
                 {errorMessage && (
-                    <div style={{
-                        color: '#ff6b6b',
-                        backgroundColor: 'rgba(255,107,107,0.1)',
-                        padding: '0.75rem',
-                        borderRadius: '8px',
-                        textAlign: 'center',
-                        fontSize: '0.9rem',
-                        border: '1px solid rgba(255,107,107,0.3)'
-                    }}>
+                    <div className="error-message">
                         {errorMessage}
                     </div>
                 )}
@@ -235,196 +182,90 @@ const Profile = () => {
                 {/* Name Section */}
                 <div>
                     <InputRow icon="user" label="Your Name">
-                        <span style={{ color: accent, fontWeight: 600, fontSize: '1.1rem' }}>{userName}</span>
+                        <span className="input-row-value">{userName}</span>
                     </InputRow>
                     {isEditingName ? (
-                        <form onSubmit={handleChangeName} style={{ marginTop: '1rem' }}>
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <form onSubmit={handleChangeName} className="edit-form">
+                            <div className="edit-form-row">
                                 <input
                                     type="text"
                                     placeholder="Enter new name"
                                     value={newName}
                                     onChange={(e) => setNewName(e.target.value)}
                                     onKeyPress={(e) => handleKeyPress(e, handleChangeName)}
-                                    style={{ ...commonInputStyle, flex: 1, minWidth: '150px' }}
+                                    className="edit-input"
                                     autoFocus
                                 />
-                                <button type="submit" style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                                    color: '#fff',
-                                    whiteSpace: 'nowrap'
-                                }}>Save</button>
-                                <button type="button" onClick={handleCancelEditName} style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: 'rgba(255,255,255,0.2)',
-                                    color: '#fff'
-                                }}>Cancel</button>
+                                <button type="submit" className="save-button">Save</button>
+                                <button type="button" onClick={handleCancelEditName} className="cancel-button">Cancel</button>
                             </div>
                         </form>
                     ) : (
-                        <button onClick={handleEditName} style={{
-                            marginTop: '1rem',
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '12px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                            color: '#fff'
-                        }}>Edit Name</button>
+                        <button onClick={handleEditName} className="edit-button">Edit Name</button>
                     )}
                 </div>
 
                 {/* Email Section */}
                 <div>
                     <InputRow icon="envelope" label="Email Address">
-                        <span style={{ color: accent, fontWeight: 600, fontSize: '1.1rem' }}>{userEmail}</span>
+                        <span className="input-row-value">{userEmail}</span>
                     </InputRow>
                     {isEditingEmail ? (
-                        <form onSubmit={handleSaveEmail} style={{ marginTop: '1rem' }}>
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <form onSubmit={handleSaveEmail} className="edit-form">
+                            <div className="edit-form-row">
                                 <input
                                     type="email"
                                     placeholder="example@domain.com"
                                     value={newEmail}
                                     onChange={(e) => setNewEmail(e.target.value)}
                                     onKeyPress={(e) => handleKeyPress(e, handleSaveEmail)}
-                                    style={{ ...commonInputStyle, flex: 1, minWidth: '150px' }}
+                                    className="edit-input"
                                     autoFocus
                                 />
-                                <button type="submit" style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                                    color: '#fff'
-                                }}>Save</button>
-                                <button type="button" onClick={handleCancelEditEmail} style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: 'rgba(255,255,255,0.2)',
-                                    color: '#fff'
-                                }}>Cancel</button>
+                                <button type="submit" className="save-button">Save</button>
+                                <button type="button" onClick={handleCancelEditEmail} className="cancel-button">Cancel</button>
                             </div>
                         </form>
                     ) : (
-                        <button onClick={handleEditEmail} style={{
-                            marginTop: '1rem',
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '12px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                            color: '#fff'
-                        }}>Edit Email</button>
+                        <button onClick={handleEditEmail} className="edit-button">Edit Email</button>
                     )}
                 </div>
 
                 {/* Phone Section */}
                 <div>
                     <InputRow icon="phone" label="Phone Number">
-                        <span style={{ color: accent, fontWeight: 600, fontSize: '1.1rem' }}>{userPhone}</span>
+                        <span className="input-row-value">{userPhone}</span>
                     </InputRow>
                     {isEditingPhone ? (
-                        <form onSubmit={handleSavePhone} style={{ marginTop: '1rem' }}>
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <form onSubmit={handleSavePhone} className="edit-form">
+                            <div className="edit-form-row">
                                 <input
                                     type="tel"
                                     placeholder="79XXXXXXX (10 digits)"
                                     value={newPhone}
                                     onChange={(e) => setNewPhone(e.target.value)}
                                     onKeyPress={(e) => handleKeyPress(e, handleSavePhone)}
-                                    style={{ ...commonInputStyle, flex: 1 }}
+                                    className="edit-input"
                                     autoFocus
                                 />
-                                <button type="submit" style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                                    color: '#fff'
-                                }}>Save</button>
-                                <button type="button" onClick={handleCancelEditPhone} style={{
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontWeight: 600,
-                                    background: 'rgba(255,255,255,0.2)',
-                                    color: '#fff'
-                                }}>Cancel</button>
+                                <button type="submit" className="save-button">Save</button>
+                                <button type="button" onClick={handleCancelEditPhone} className="cancel-button">Cancel</button>
                             </div>
                         </form>
                     ) : (
-                        <button onClick={handleEditPhone} style={{
-                            marginTop: '1rem',
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '12px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                            color: '#fff'
-                        }}>Edit Phone</button>
+                        <button onClick={handleEditPhone} className="edit-button">Edit Phone</button>
                     )}
                 </div>
 
                 {/* Action Buttons */}
-                <div className="profile-actions" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <button onClick={handleViewOrders} style={{
-                        padding: '1rem 2rem',
-                        borderRadius: '14px',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                        background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                        color: '#fff',
-                        boxShadow: '0 15px 40px -10px rgba(138,101,175,0.5)',
-                        minWidth: '150px'
-                    }}>My Orders</button>
+                <div className="profile-actions">
+                    <button onClick={handleViewOrders} className="action-button">My Orders</button>
 
                     <Link to="/Cart">
-                        <button style={{
-                            padding: '1rem 2rem',
-                            borderRadius: '14px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            background: `linear-gradient(135deg, ${purple1}, ${purple2})`,
-                            color: '#fff',
-                            boxShadow: '0 15px 40px -10px rgba(138,101,175,0.5)',
-                            minWidth: '150px'
-                        }}>Go to Cart</button>
+                        <button className="action-button">Go to Cart</button>
                     </Link>
 
-                    <button onClick={handleLogout} style={{
-                        padding: '1rem 2rem',
-                        borderRadius: '14px',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                        background: `linear-gradient(135deg, ${accent}, #9c67b4)`,
-                        color: '#1f0f2e',
-                        boxShadow: '0 15px 40px -10px rgba(207,163,225,0.5)',
-                        minWidth: '150px'
-                    }}>Logout</button>
+                    <button onClick={handleLogout} className="action-button logout-button">Logout</button>
                 </div>
             </div>
         </div>

@@ -87,7 +87,7 @@ body{
 }
 
 .nav-menu a:visited {
-  color: var(--hover-goldgold); /* ensures visited links don’t turn purple */
+  color: var(--gold); /* ensures visited links don’t turn purple */
 }
 
 .nav-menu a:hover {
@@ -321,3 +321,12 @@ body{
   }
 }
 
+.hamburger-icon a,
+.nav-menu-mobile a {
+  text-decoration: none;
+  color: var(--gold);
+}
+
+.nav-menu-mobile a:hover {
+  color: var(--hover-gold);
+}

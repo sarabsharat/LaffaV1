@@ -11,142 +11,196 @@
    --white: #ffffff;
    --accent: #CFA3E1;
  }
- 
- /* Container for the profile page */
+
  .profile-wrapper {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   min-height: 100vh;
-   background: linear-gradient(135deg, var(--purple2) 0%, var(--purple1) 100%);
-   padding: 2rem;
- }
- 
- .profile-container {
-   width: 100%;
-   max-width: 1100px;
-   background: rgba(255, 255, 255, 0.05);
-   border-radius: 30px;
-   box-shadow: 0 30px 60px -10px rgba(108, 74, 121, 0.4);
-   overflow: hidden;
-   backdrop-filter: blur(12px);
- }
- 
- /* Title styling */
- .profile-title {
-   color: #e0e0e0;
-   font-size: 1.75rem;
-   margin: 0;
-   padding: 0.5rem 0;
-   text-align: center;
- }
- 
- /* Input row styling */
- .input-row-container {
-   display: flex;
-   align-items: center;
-   margin-bottom: 1rem;
-   width: 100%;
- }
- 
- .input-row-icon {
-   margin-right: 15px;
-   min-width: 32px;
-   text-align: center;
- }
- 
- .input-row-content {
-   flex-grow: 1;
- }
- 
- .input-row-label {
-   margin-bottom: 0.25rem;
-   display: block;
-   color: var(--white);
-   font-weight: 500;
- }
- 
- /* Input field styles */
- .profile-info-panel input[type="text"],
- .profile-info-panel input[type="email"],
- .profile-info-panel input[type="tel"],
- .profile-info-panel select {
-   width: 100%;
-   background: var(--light-bg);
-   border-radius: 12px;
-   border: 1px solid var(--border-color);
-   padding: 0.75rem 1rem;
-   color: var(--dark-text);
-   font-weight: 500;
-   transition: all 0.3s ease;
- }
- 
- .profile-info-panel input[type="text"]:focus,
- .profile-info-panel input[type="email"]:focus,
- .profile-info-panel input[type="tel"]:focus,
- .profile-info-panel select:focus {
-   outline: none;
-   border-color: var(--purple3);
- }
- 
- /* Button styles */
- button {
-   background: linear-gradient(135deg, var(--purple1), var(--purple2));
-   color: white;
-   border: none;
-   border-radius: 12px;
-   padding: 0.75rem 1.5rem;
-   cursor: pointer;
-   margin-top: 0.5rem;
-   font-weight: 600;
-   transition: all 0.3s ease;
- }
- 
- button:hover {
-   background: #5a3e4f;
- }
- 
- button:active {
-   transform: scale(0.98);
- }
- 
- /* Error message styling */
- .error-message {
-   color: #ff6b6b;
-   font-size: 0.9rem;
-   margin-top: 0.5rem;
-   text-align: center;
- }
- 
- /* Google login button */
- .loginsignup-google-btn {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 8px;
-   padding: 0.75rem;
-   border-radius: 12px;
-   border: 1px solid rgba(255, 255, 255, 0.15);
-   background: rgba(255, 255, 255, 0.08);
-   cursor: pointer;
-   color: #fff;
-   font-weight: 500;
-   font-size: 0.9rem;
-   backdrop-filter: blur(6px);
- }
- 
- /* Responsive design */
- @media (max-width: 768px) {
-   .profile-wrapper {
-     padding: 1rem;
-   }
- 
-   .profile-container {
-     padding: 1.5rem;
-   }
- 
-   .profile-title {
-     font-size: 1.5rem;
-   }
- }
- 
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #221820 0%, #432e3f 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-container {
+    border-radius: 30px;
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 30px 60px -10px rgba(108, 74, 121, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-title-container {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.profile-title {
+    color: #e0e0e0;
+    padding: 0.5rem 0;
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.profile-title-divider {
+    height: 4px;
+    width: 120px;
+    background: linear-gradient(90deg, var(--purple1), var(--purple2));
+    border-radius: 2px;
+    margin: 0 auto;
+}
+
+.error-message {
+    color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.input-row-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.input-row-icon {
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-row-icon span {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.input-row-content {
+    flex: 1;
+    margin-left: 1rem;
+}
+
+.input-row-label {
+    display: block;
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.input-row-value {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.edit-form {
+    margin-top: 1rem;
+}
+
+.edit-form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.edit-input {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    border: 1px solid #221820;
+    padding: 0.75rem 1rem;
+    color: #1f0f2e;
+    font-weight: 500;
+    flex: 1;
+    min-width: 150px;
+}
+
+.save-button,
+.cancel-button,
+.edit-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.save-button {
+    background: linear-gradient(135deg, var(--purple1), var(--purple2));
+    color: #fff;
+}
+
+.cancel-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.edit-button {
+    margin-top: 1rem;
+    background: linear-gradient(135deg, var(--purple1), var(--purple2));
+    color: #fff;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    padding: 1rem 2rem;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--purple1), var(--purple2));
+    color: #fff;
+    box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5);
+    min-width: 150px;
+}
+
+.logout-button {
+    background: linear-gradient(135deg, var(--accent), #9c67b4);
+    color: #1f0f2e;
+    box-shadow: 0 15px 40px -10px rgba(207, 163, 225, 0.5);
+}
+
+@media (max-width: 768px) {
+    .profile-wrapper {
+        padding: 1rem;
+    }
+
+    .profile-container {
+        padding: 1.5rem;
+    }
+
+    .profile-title {
+        font-size: 2rem;
+    }
+
+    .edit-form-row {
+        flex-direction: column;
+    }
+
+    .edit-input,
+    .save-button,
+    .cancel-button {
+        width: 100%;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}

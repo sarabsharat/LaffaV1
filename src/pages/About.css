@@ -1,79 +1,88 @@
-    :root {
-        --bg-color: #22181f;
-          --gold:#9e6930;
-          --hover-gold: #e1cba5; /* lighter gold */
-          --purple: #6C4A79;
-      }
-      html, body {
-        overscroll-behavior: none;
-        margin: 0;
-        color:var(--bg-color);
-        font-family: system-ui, -apple-system, sans-serif;
-      }
-      
-      .about-section {
-        position: relative;
-        height: 50vh;
-        width: 100vw; /* Use viewport width */
-        overflow: visible;
-        background-color: var(--bg-color); /* Set a consistent background color */
-      }
-      
-      .panel {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 2rem; /* Consider adjusting padding if needed after centering */
-        top: 50%; /* Position the top edge at the vertical center */
-        transform: translateY(-50%); /* Move the element up by half its height */
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .panel.plain {
-        background: var(--bg-color);
-        flex-direction: column;
-        color:var(--gold);
-      }
-      
-      .panel.solid.light {
-        background:var(--gold);
-        color: var(--purple);
-      }
-
-      
-      .panel.solid.purple {
-        background:var(--purple);
-        color:var(--gold);
-      }
-      
-      .vh-60 {
- height: 60vh !important;
-      }
-      
-      .content {
-        max-width: 800px;
-      }
-
-      .about-section .panel:last-child .content {
-        margin-top: 50px; /* Adjust the top margin as needed */
-      }
-      
-      .content p {
-        font-size: 1.5rem; /* Adjust the size as needed */
-        transition: font-size 0.3s ease-in-out; /* Smooth transition for font size */
-      }
-      .content p:hover span{
-        color:var(--hover-gold);
-        transition: color 0.3s ease-in-out; /* Smooth transition for span color */
-      }
-      .content p:hover {
-        font-size: 1.55rem;
-      }
-      .content p span {
-        /* Ensure spans also transition color on hover */
-        transition: color 0.3s ease-in-out;
-      }
+:root {
+    --bg-color: #22181f;
+    --gold: #9e6930;
+    --hover-gold: #e1cba5;
+    --purple: #6C4A79;
+    --light-text: #f0f0f0;
+  }
+  
+  .about-section {
+    background-color: var(--bg-color);
+    color: var(--light-text);
+    padding: 4rem 2rem;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  .about-section .content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .about-section h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .about-section p {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    color: var(--light-text);
+  }
+  
+  .about-section .highlight {
+    color: var(--hover-gold);
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  .about-section .separator {
+    height: 2px;
+    width: 100px;
+    background-color: var(--gold);
+    margin: 3rem auto;
+    border-radius: 2px;
+  }
+  
+  .about-section .panel {
+    padding: 4rem 0;
+  }
+  
+  .panel.solid.light {
+    background: var(--gold);
+    color: var(--bg-color);
+  }
+  
+  .panel.solid.light h2 {
+      color: var(--bg-color);
+  }
+  
+  .panel.solid.purple {
+    background: var(--purple);
+    color: var(--light-text);
+  }
+  
+  .panel.solid.purple h2 {
+      color: var(--light-text);
+  }
+  
+  
+  @media (max-width: 768px) {
+    .about-section {
+      padding: 2rem 1rem;
+    }
+  
+    .about-section h2 {
+      font-size: 2rem;
+    }
+  
+    .about-section p {
+      font-size: 1.2rem;
+    }
+  }
+  

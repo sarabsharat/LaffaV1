@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+import { FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import products from '../productData';
 import './Product.css';
 
@@ -9,6 +9,7 @@ const ProductPage = ({ addToCart }) => {
     const [product, setProduct] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
+    const [isAdded, setIsAdded] = useState(false);
 
     useEffect(() => {
         const selectedProduct = products.find(p => p.id === parseInt(productId));
@@ -35,10 +36,17 @@ const ProductPage = ({ addToCart }) => {
         setSelectedSize(size);
     };
 
-    // Correctly handle the Add to Cart action
     const handleAddToCart = (e) => {
-        e.preventDefault(); // Prevent navigation if the button is inside a link
+        e.preventDefault();
         e.stopPropagation();
+        
+        if (isAdded) return;
+
+        setIsAdded(true);
+        setTimeout(() => {
+            setIsAdded(false);
+        }, 1500);
+
         if (product && typeof addToCart === 'function') {
             addToCart(product);
         } else {
@@ -52,6 +60,10 @@ const ProductPage = ({ addToCart }) => {
 
     return (
         <div className="product-page-container">
+            <Link to="/shop" className="back-to-shop">
+                <FaArrowLeft />
+                <span>Back to Shop</span>
+            </Link>
             <div className="product-gallery">
                 <div className="main-product-image">
                     <img src={currentImage} alt={product.name} />
@@ -116,8 +128,14 @@ const ProductPage = ({ addToCart }) => {
                 )}
                 
                 <div className="actions">
-                    <button className="add-to-cart" onClick={handleAddToCart}>
-                        <FaShoppingCart /> Add to Cart
+                <button className={`add-to-cart ${isAdded ? 'added' : ''}`} onClick={handleAddToCart}>
+                        {isAdded ? (
+                            'ADDED!'
+                        ) : (
+                            <>
+                                <FaShoppingCart className="cart-icon" /> Add to Cart
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
