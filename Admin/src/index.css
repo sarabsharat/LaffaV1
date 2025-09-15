@@ -1,0 +1,19 @@
+:root {
+  --darker-purple: #22181f;
+    --gold:#9e6930;
+    --hover-gold: #e1cba5; /* lighter gold */
+    --purple: #6C4A79; /* Define the darker purple color */
+}
+
+@font-face {
+  font-family: 'English';
+  src: url('/fonts/english.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+body{
+  margin:0;
+  font-family: english;
+  background-color: var(--darker-purple);
+}

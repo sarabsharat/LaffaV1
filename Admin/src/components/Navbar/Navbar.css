@@ -1,0 +1,27 @@
+:root {
+  --darker-purple: #22181f;
+    --gold:#9e6930;
+    --hover-gold: #e1cba5; /* lighter gold */
+    --purple: #6C4A79; /* Define the darker purple color */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--darker-purple);
+  box-shadow: 0 2px 100px rgba(0, 0, 0, 0.5);
+  padding: 15px 40px;
+  color: var(--gold);
+  direction: rtl; /* Added direction: rtl; back */
+  position: relative; /* Needed for absolute positioning of mobile menu */
+}
+
+.nav-logo {
+  height: 200px;
+  transform: rotate(90deg);
+}
+.nav-profile {
+  height: 200px;
+
+}
