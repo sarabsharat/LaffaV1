@@ -1,11 +1,11 @@
 import React from 'react'
-import "./admin.scss"
+import "./Admin.css"
 
-export const admin = () => {
+export const Admin = () => {
   return (
     <div className='admin'>
         
     </div>
   )
 }
-export default admin;
+export default Admin;
