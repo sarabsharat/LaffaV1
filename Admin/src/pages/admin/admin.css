@@ -1,0 +1,14 @@
+.admin-layout { display: flex; flex-direction: row; }
+        .admin-content { flex-grow: 1; padding: 20px; height: calc(100vh - 75px); overflow-y: auto; }
+        
+        /* --- Responsive Styles --- */
+        @media (max-width: 800px) {
+            .admin-layout { flex-direction: column; }
+            .admin-content { height: auto; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 20px; }
+            .nav-toggle { display: block; }
+            .nav-menu { position: absolute; top: 100%; right: 0; width: 100%; background-color: var(--darker-purple); box-shadow: 0 5px 10px rgba(0,0,0,0.3); flex-direction: column; padding: 30px; gap: 25px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
+            .nav-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        }

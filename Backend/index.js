@@ -102,7 +102,7 @@ const productSchema = new mongoose.Schema({
   image: { type: String, required: true },
   category: { type: String, required: true },
   new_price: { type: Number, required: true },
-  old_price: { type: Number, required: true },
+  old_price: { type: Number,},
   description: { type: String, required: true },
   date: { type: Date, default: Date.now },
   available: { type: Boolean, default: true },

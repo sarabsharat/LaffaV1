@@ -3,6 +3,7 @@
     --gold:#9e6930;
     --hover-gold: #e1cba5; /* lighter gold */
     --purple: #6C4A79; /* Define the darker purple color */
+    font-family: english;
 }
 
 .navbar {
@@ -23,5 +24,133 @@
 }
 .nav-profile {
   width: 75px;
-
 }
+.navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--darker-purple);
+            padding: 10px 40px;
+            color: white;
+            position: relative; /* Needed for the mobile menu dropdown */
+            z-index: 1000;
+          }
+
+          .nav-logo {
+            height: 90px;
+          }
+
+          .nav-profile {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+          }
+
+          /* This is the container for the menu items on desktop */
+          .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 25px; /* Creates space between the title and profile image */
+          }
+
+          .nav-menu h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--gold);
+          }
+
+          /* --- Hamburger Menu Icon --- */
+          .nav-toggle {
+            display: none; /* Hidden on desktop */
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+            z-index: 1001; /* Ensures it's clickable above other content */
+          }
+
+          .hamburger {
+            display: block;
+            position: relative;
+            width: 30px;
+            height: 3px;
+            background-color: var(--gold);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+          }
+
+          .hamburger::before,
+          .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: var(--gold);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+            left: 0;
+          }
+
+          .hamburger::before {
+            transform: translateY(-10px);
+          }
+
+          .hamburger::after {
+            transform: translateY(10px);
+          }
+
+          /* Animation for Hamburger turning into an "X" */
+          .nav-toggle.active .hamburger {
+            background-color: transparent; /* Middle line vanishes */
+          }
+
+          .nav-toggle.active .hamburger::before {
+            transform: rotate(45deg);
+          }
+
+          .nav-toggle.active .hamburger::after {
+            transform: rotate(-45deg);
+          }
+
+          /* --- Media Query for Mobile View --- */
+          @media (max-width: 768px) {
+            .navbar {
+              padding: 10px 20px;
+            }
+
+            .nav-toggle {
+              display: block; /* Show the hamburger icon */
+            }
+
+            .nav-menu {
+              /* Position the menu as a dropdown */
+              position: absolute;
+              top: 100%; /* Position right below the navbar */
+              right: 0; /* Align to the right */
+              width: 100%;
+
+              /* Appearance */
+              background-color: var(--darker-purple);
+              box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+              
+              /* Layout */
+              flex-direction: column;
+              padding: 30px;
+              gap: 25px;
+              
+              /* Hide/Show Animation */
+              opacity: 0;
+              visibility: hidden;
+              transform: translateY(-10px);
+              transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            }
+
+            /* This class is toggled by JavaScript to show the menu */
+            .nav-menu.active {
+              opacity: 1;
+              visibility: visible;
+              transform: translateY(0);
+            }
+          }

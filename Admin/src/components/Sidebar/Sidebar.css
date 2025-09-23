@@ -1,45 +1,36 @@
-:root {
-  --darker-purple: #22181f;
-    --gold:#9e6930;
-    --hover-gold: #e1cba5; /* lighter gold */
-    --purple: #6C4A79; /* Define the darker purple color */
-    --purple1: #432e3f;
-    --purple2: #221820;
-    --purple3: #764ba2;
-    --dark-text: #1f0f2e;
-    --border-color: rgba(255, 255, 255, 0.08);
-    --light-bg: rgba(255, 255, 255, 0.85);
-    --white: #ffffff;
-    --accent: #CFA3E1;
-}
-
-.sidebar{
-    display:flex;
-    flex-direction:column;
-    padding-top:20px;
-    gap:50px;
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    gap: 50px;
     width: 100%;
     max-width: 250px;
-    height: 100vh;
     background: linear-gradient(135deg, #221820 0%, #432e3f 100%);
-    box-shadow: 2px 0 40px rgba(0, 0, 0, 0.8);  
-
+    box-shadow: 2px 0 40px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+    flex-shrink: 0; 
 }
-.sidebarItem{
-    display:flex;
-    align-items:center;
-    justify-content: center;
-    margin: 0 20px;
-    gap:10px;
-    padding:10px 20px;
-    border-radius: 6px;
-    color:var(--white);
-    cursor:pointer;
-    background: linear-gradient(135deg, var(--purple1), var(--purple2));
-    box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5);
+.sidebarItem {
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 20px;
+gap: 10px;
+padding: 10px 20px;
+border-radius: 6px;
+color: var(--white);
+cursor: pointer;
+background: linear-gradient(135deg, var(--purple1), var(--purple2));
+box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.5);
+text-decoration: none;
+transition: all 0.3s ease;
 }
-.sidebarItem:hover{
-    background: linear-gradient(135deg, var(--accent), #9c67b4);
-    color: var(--darker-purple);
-    box-shadow: 0 15px 40px -10px rgba(138, 101, 175, 0.8);
+.sidebarItem:hover {
+background: linear-gradient(135deg, var(--accent), #9c67b4);
+color: var(--darker-purple);
+transform: translateY(-2px); 
 }
+        @media (max-width: 800px) {
+            .sidebar { padding: 15px 0; flex-direction: row; width: 100%; max-width: none; height: auto; justify-content: center; background: var(--purple2); box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5); gap: 20px; }
+            .sidebarItem { margin: 0; }
+        }
