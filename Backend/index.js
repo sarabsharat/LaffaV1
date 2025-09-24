@@ -102,13 +102,20 @@ const productSchema = new mongoose.Schema({
   image: { type: String, required: true },
   category: { type: String, required: true },
   new_price: { type: Number, required: true },
-  old_price: { type: Number,},
+  old_price: { type: Number },
   description: { type: String, required: true },
   date: { type: Date, default: Date.now },
   available: { type: Boolean, default: true },
-  colors: { type: [String], default: [] },
-  sizes: { type: [String], default: [] }
+  colors: [
+  {
+    name: { type: String, required: true },
+    hex: { type: String, required: true }
+  }
+],
+sizes: { type: [String], default: [] }
 });
+
+
 
 const Product = mongoose.model("Product", productSchema);
 
@@ -130,8 +137,8 @@ app.post('/addproduct', async (req, res) => {
       old_price: req.body.old_price,
       description: req.body.description,
       available: req.body.available !== undefined ? req.body.available : true,
-      colors: req.body.colors || [],
-      sizes: req.body.sizes || []
+      colors: req.body.colors || [],   
+      sizes: req.body.sizes || []      
     });
 
     await newProduct.save();
