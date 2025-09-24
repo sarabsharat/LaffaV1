@@ -114,10 +114,12 @@
             transform: rotate(-45deg);
           }
 
+          
           /* --- Media Query for Mobile View --- */
           @media (max-width: 768px) {
             .navbar {
               padding: 10px 20px;
+              width: 100%;
             }
 
             .nav-toggle {

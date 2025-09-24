@@ -68,38 +68,51 @@ const AddProduct = () => {
         updateColorField(index, 'hex', e.target.value);
     };
 
-    const saveProduct = async() => {
-        let responseData;
-        let formData = new FormData();
-        formData.append("product", productDetails.image);
+const saveProduct = async() => {
+    let responseData;
+    let formData = new FormData();
+    formData.append("product", productDetails.image);
 
-        // Upload the image first
-        await fetch("http://localhost:2000/upload", {
+    await fetch("http://localhost:2000/upload", {
+        method: "POST",
+        body: formData
+    }).then((resp) => resp.json()).then((data) => {
+        responseData = data;
+    });
+
+    if (responseData.success) {
+        // Construct the final product object with corrected data types and structure
+        const finalProduct = {
+            name: productDetails.name,
+            image: responseData.image_url,
+            category: productDetails.category,
+            new_price: productDetails.new_price,
+            old_price: productDetails.old_price,
+            description: productDetails.description,
+            // Ensure colors are sent as an array of objects with 'name' and 'hex'
+            colors: productDetails.colors.map(c => ({
+                name: c.name,
+                hex: c.hex
+            })),
+            // Ensure sizes are sent as an array of strings
+            sizes: productDetails.sizes
+        };
+
+        // Send the product data to the backend
+        await fetch("http://localhost:2000/addproduct", {
             method: "POST",
-            body: formData
-        }).then((resp) => resp.json()).then((data) => { responseData = data });
-
-        if (responseData.success) {
-            // Prepare the product data payload for the backend
-            const finalProduct = {
-                ...productDetails,
-                image: responseData.image_url,
-                // The colors and sizes are already in the correct format from the state
-            };
-
-            // Send the product data to the addproduct endpoint
-            await fetch("http://localhost:2000/addproduct", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify(finalProduct)
-            }).then((resp) => resp.json()).then((data) => {
-                data.success ? alert("Product Added Successfully") : alert("Failed to add product");
-            });
-        }
-    };
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify(finalProduct)
+        }).then((resp) => resp.json()).then((data) => {
+            data.success ? alert("Product Added Successfully") : alert("Failed to add product");
+        });
+    } else {
+        alert("Image upload failed!");
+    }
+};
 
     return (
         <div className='add-product'>
